@@ -4,20 +4,21 @@ import lombok.*;
 import org.bson.types.ObjectId;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
+import sample.Enums.Score;
 
 @Getter
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
 @Data
-@Document(collection = "Players")
+@Document(collection = "Games")
 @Builder
-public class PlayerDAO {
+public class GameDAO {
     @Id
     private ObjectId _id;
-    private String name;
-    private String fullName;
-    private String licenseID;
-    private Float score;
-    private Integer rating;
+    private String playerWhiteID;
+    private String playerBlackID;
+    private Integer chessboardNo;
+    private Score score;
 }
+

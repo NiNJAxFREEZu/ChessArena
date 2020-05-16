@@ -5,6 +5,8 @@ import org.bson.types.ObjectId;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
+import java.util.List;
+
 @Getter
 @Setter
 @AllArgsConstructor
@@ -12,12 +14,9 @@ import org.springframework.data.mongodb.core.mapping.Document;
 @Data
 @Document(collection = "Players")
 @Builder
-public class PlayerDAO {
+public class RoundDAO {
     @Id
     private ObjectId _id;
-    private String name;
-    private String fullName;
-    private String licenseID;
-    private Float score;
-    private Integer rating;
+    private List<GameDAO> games;
+    private Integer nr;
 }
