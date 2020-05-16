@@ -22,8 +22,8 @@ public class Main extends Application {
     @Override
     public void start(Stage stage) throws Exception {
         stage.setScene(new Scene(rootNode, 700, 700));
-        stage.setMinWidth(700);
-        stage.setMinHeight(700);
+        stage.setMinWidth(1280);
+        stage.setMinHeight(720);
         stage.show();
     }
 
