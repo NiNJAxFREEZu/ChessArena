@@ -5,7 +5,7 @@ import org.bson.types.ObjectId;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
-import java.util.List;
+import java.util.Set;
 
 @Getter
 @Setter
@@ -17,6 +17,6 @@ import java.util.List;
 public class RoundDAO {
     @Id
     private ObjectId _id;
-    private List<GameDAO> games;
+    private Set<GameDAO> games;
     private Integer nr;
 }

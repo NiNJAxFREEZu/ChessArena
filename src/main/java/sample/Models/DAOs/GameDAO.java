@@ -19,6 +19,7 @@ public class GameDAO {
     private String playerWhiteID;
     private String playerBlackID;
     private Integer chessboardNo;
-    private Score score;
+    @Builder.Default
+    private Score score = Score.NotFinished;
 }
 

@@ -4,5 +4,6 @@ public enum TournamentType {
     Swiss,
     RoundRobin,
     DoubleRoundRobin,
-    HeadsUp
+    HeadsUp,
+    NotSpecified
 }
