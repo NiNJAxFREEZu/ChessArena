@@ -2,6 +2,7 @@ package sample.Models.DTOs;
 
 import lombok.*;
 import sample.Models.DAOs.PlayerDAO;
+import sample.Service.ExternalSystemsService;
 
 @Data
 @AllArgsConstructor
@@ -25,6 +26,17 @@ public class PlayerDTO {
                 .licenseID(playerDAO.getLicenseID())
                 .score(playerDAO.getScore())
                 .rating(playerDAO.getRating())
+                .build();
+    }
+
+    public static PlayerDTO map(CreatingPlayerForm creatingPlayerForm) {
+        return PlayerDTO.builder()
+                .playerID(creatingPlayerForm.getPlayerID().toString())
+                .name(creatingPlayerForm.getName())
+                .fullName(creatingPlayerForm.getFullName())
+                .licenseID(creatingPlayerForm.getLicenseID())
+                .score(creatingPlayerForm.getScore())
+                .rating(ExternalSystemsService.getRankingOfThePlayer(creatingPlayerForm.getLicenseID()))
                 .build();
     }
 }

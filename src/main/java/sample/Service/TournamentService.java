@@ -62,4 +62,17 @@ public class TournamentService {
         previousRound = currentRound;
         currentRound = pairingService.getPlayerPairing(previousRound);
     }
+
+    public void createTournament(CreatingTournamentForm creatingTournamentForm) {
+        Tournament tournament = Tournament.create(creatingTournamentForm);
+
+    }
+
+    public void openFromFile(String filePath) {
+
+    }
+
+    public void saveToFile(String filePath) {
+
+    }
 }

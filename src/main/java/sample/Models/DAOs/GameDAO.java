@@ -3,7 +3,6 @@ package sample.Models.DAOs;
 import lombok.*;
 import org.bson.types.ObjectId;
 import org.springframework.data.annotation.Id;
-import org.springframework.data.mongodb.core.mapping.Document;
 import sample.Enums.Score;
 
 @Getter
@@ -11,7 +10,6 @@ import sample.Enums.Score;
 @AllArgsConstructor
 @NoArgsConstructor
 @Data
-@Document(collection = "Games")
 @Builder
 public class GameDAO {
     @Id
