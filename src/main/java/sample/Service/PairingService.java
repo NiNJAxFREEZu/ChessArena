@@ -7,9 +7,13 @@ import sample.Models.DTOs.RoundDTO;
 import java.util.List;
 
 @Service
-public interface PairingService {
-    RoundDTO getPlayerPairing(List<PlayerDTO> players);
+public class PairingService {
+    RoundDTO getPlayerPairing(List<PlayerDTO> players) {
+        return null;
+    }
 
-    RoundDTO getPlayerPairing(RoundDTO previousRound);
+    RoundDTO getPlayerPairing(RoundDTO previousRound) {
+        return null;
+    }
 
 }
