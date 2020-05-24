@@ -1,6 +1,5 @@
 package sample.Models.DTOs;
 
-import java.io.File;
 import java.util.List;
 
 //TODO 21.05.2020 implement methods.
@@ -38,7 +37,7 @@ public class TournamentInProgress extends Tournament {
 
     }
 
-    public File createProtocol() {
+    public String createProtocol() {
         throw new UnsupportedOperationException("Not implementedYet");
     }
 
