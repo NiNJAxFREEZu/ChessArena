@@ -5,6 +5,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
+import javafx.stage.StageStyle;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -25,9 +26,10 @@ public class Main extends Application {
 
     @Override
     public void start(Stage stage) throws Exception {
-        stage.setScene(new Scene(rootNode, 700, 700));
-        stage.setMinWidth(1280);
-        stage.setMinHeight(720);
+        stage.initStyle(StageStyle.UNDECORATED);
+        stage.setScene(new Scene(rootNode, 1024, 576));
+        stage.setMinWidth(1024);
+        stage.setMinHeight(576);
         stage.show();
     }
 
