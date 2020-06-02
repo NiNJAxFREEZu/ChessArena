@@ -1,10 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.Menu?>
 <?import javafx.scene.control.MenuBar?>
 <?import javafx.scene.control.MenuItem?>
+<?import javafx.scene.control.PasswordField?>
 <?import javafx.scene.control.SeparatorMenuItem?>
+<?import javafx.scene.control.SplitMenuButton?>
 <?import javafx.scene.control.Tab?>
 <?import javafx.scene.control.TabPane?>
 <?import javafx.scene.control.TableColumn?>
@@ -13,7 +16,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<VBox prefHeight="400.0" prefWidth="640.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sample.GUI.SplashScreenController">
+<VBox prefHeight="400.0" prefWidth="640.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sample.GUI.SplashScreenController">
   <children>
     <MenuBar VBox.vgrow="NEVER">
       <menus>
@@ -40,12 +43,24 @@
     </MenuBar>
       <TabPane tabClosingPolicy="UNAVAILABLE">
         <tabs>
-          <Tab text="Ustawienia turnieju">
+          <Tab text="Tournament Settings">
             <content>
-              <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="316.0" prefWidth="640.0" />
+              <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="316.0" prefWidth="640.0">
+                     <children>
+                        <SplitMenuButton layoutX="35.0" layoutY="39.0" mnemonicParsing="false" prefHeight="26.0" prefWidth="140.0" text="Tournament type">
+                          <items>
+                            <MenuItem mnemonicParsing="false" text=" Swiss" />
+                            <MenuItem mnemonicParsing="false" text="RoundRobin" />
+                              <MenuItem mnemonicParsing="false" text="DoubleRoundRobin" />
+                              <MenuItem mnemonicParsing="false" text="HeadsUp" />
+                          </items>
+                        </SplitMenuButton>
+                        <PasswordField layoutX="147.0" layoutY="86.0" prefHeight="26.0" prefWidth="28.0" />
+                        <Button layoutX="35.0" layoutY="86.0" mnemonicParsing="false" prefHeight="26.0" prefWidth="113.0" text="Amount of runds" />
+                     </children></AnchorPane>
             </content>
           </Tab>
-          <Tab text="Lista graczy">
+          <Tab text="List of Players">
             <content>
               <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                      <children>
@@ -53,14 +68,14 @@
                            <children>
                               <TableView layoutX="14.0" layoutY="49.0" prefHeight="312.0" prefWidth="615.0">
                                  <columns>
-                                    <TableColumn prefWidth="96.4000244140625" text="Imię" />
-                                    <TableColumn prefWidth="120.99996948242188" text="Nazwisko" />
+                                    <TableColumn prefWidth="96.4000244140625" text="First Name" />
+                                    <TableColumn prefWidth="120.99996948242188" text="Surname" />
                                     <TableColumn prefWidth="131.5999755859375" text="Ranking" />
-                                    <TableColumn prefWidth="109.0" text="Płeć" />
-                                    <TableColumn prefWidth="120.20001220703125" text="Klub" />
+                                    <TableColumn prefWidth="109.0" text="Gender" />
+                                    <TableColumn prefWidth="120.20001220703125" text="Club" />
                                  </columns>
                               </TableView>
-                              <Label layoutX="14.0" layoutY="14.0" text="Lista Graczy">
+                              <Label layoutX="20.0" layoutY="14.0" text="List of Players">
                                  <font>
                                     <Font size="21.0" />
                                  </font>
