@@ -16,14 +16,14 @@
               <items>
                   <AnchorPane prefHeight="97.0" prefWidth="151.0">
                      <children>
-                      <Button defaultButton="true" layoutX="9.0" layoutY="14.0" mnemonicParsing="false" prefHeight="26.0" prefWidth="134.0" text="New tournament" textAlignment="CENTER" />
-                        <Button layoutX="9.0" layoutY="56.0" mnemonicParsing="false" prefHeight="31.0" prefWidth="133.0" text="Open..." textAlignment="CENTER" />
+                      <Button fx:id="newTournamentButton" defaultButton="true" layoutX="9.0" layoutY="14.0" mnemonicParsing="false" onAction="#newTournament" prefHeight="26.0" prefWidth="134.0" text="New tournament" textAlignment="CENTER" />
+                        <Button fx:id="openButton" layoutX="9.0" layoutY="56.0" mnemonicParsing="false" onAction="#openFile" prefHeight="31.0" prefWidth="133.0" text="Open..." textAlignment="CENTER" />
                      </children>
                   </AnchorPane>
                   <AnchorPane prefHeight="415.0" prefWidth="151.0" />
                   <AnchorPane prefHeight="22.0" prefWidth="151.0">
                      <children>
-                        <Button fx:id="closeButton" cancelButton="true" layoutX="6.0" layoutY="6.0" mnemonicParsing="false" onAction="#closeButtonAction" prefHeight="31.0" prefWidth="139.0" text="Exit" />
+                        <Button fx:id="closeButton" cancelButton="true" layoutX="6.0" layoutY="6.0" mnemonicParsing="false" onAction="#exit" prefHeight="31.0" prefWidth="139.0" text="Exit" />
                      </children>
                   </AnchorPane>
               </items>
