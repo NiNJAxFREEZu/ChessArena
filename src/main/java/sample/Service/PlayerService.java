@@ -20,7 +20,7 @@ public class PlayerService {
 
         playersRepository.findPlayerByDetails(playerDTO)
                 .ifPresent((e) -> {
-                    throw new RuntimeException("Player already exists: " + e.getFullName() + ", " + e.getName());
+                    throw new RuntimeException("Player already exists: " + e.getSurname() + ", " + e.getName());
                 });
 
         playersRepository.save(PlayerDAO.map(playerDTO));

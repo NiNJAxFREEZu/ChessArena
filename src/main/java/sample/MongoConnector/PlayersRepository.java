@@ -18,6 +18,6 @@ public interface PlayersRepository extends MongoRepository<PlayerDAO, String> {
     Optional<PlayerDAO> findByNameAndFullNameAndLicenseID(String name, String fullName, String licenseID);
 
     default Optional<PlayerDAO> findPlayerByDetails(PlayerDTO playerDTO) {
-        return findByNameAndFullNameAndLicenseID(playerDTO.getName(), playerDTO.getFullName(), playerDTO.getLicenseID());
+        return findByNameAndFullNameAndLicenseID(playerDTO.getName(), playerDTO.getSurname(), playerDTO.getLicenseID());
     }
 }

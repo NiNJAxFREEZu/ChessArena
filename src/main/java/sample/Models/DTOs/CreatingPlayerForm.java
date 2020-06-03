@@ -14,16 +14,22 @@ public class CreatingPlayerForm {
     @Id
     private ObjectId playerID;
     private String name;
-    private String fullName;
+    private String surname;
     private String licenseID;
+    private String gender;
+    private String title;
+    private String club;
     @Builder.Default
     private Float score = 0f;
 
-    public CreatingPlayerForm(String name, String fullName, String licenseID) {
+    public CreatingPlayerForm(String name, String surname, String licenseID, String gender, String club, String title) {
         this.name = name;
-        this.fullName = fullName;
+        this.surname = surname;
         this.licenseID = licenseID;
         this.playerID = new ObjectId();
         this.score = 0f;
+        this.gender = gender;
+        this.club = club;
+        this.title = title;
     }
 }
