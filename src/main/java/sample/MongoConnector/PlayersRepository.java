@@ -11,13 +11,13 @@ import java.util.Optional;
 public interface PlayersRepository extends MongoRepository<PlayerDAO, String> {
     Optional<PlayerDAO> findByName(String name);
 
-    Optional<PlayerDAO> findByFullName(String fullName);
+    Optional<PlayerDAO> findBySurname(String fullName);
 
     Optional<PlayerDAO> findByLicenseID(String licenseID);
 
-    Optional<PlayerDAO> findByNameAndFullNameAndLicenseID(String name, String fullName, String licenseID);
+    Optional<PlayerDAO> findByNameAndSurnameAndLicenseID(String name, String fullName, String licenseID);
 
     default Optional<PlayerDAO> findPlayerByDetails(PlayerDTO playerDTO) {
-        return findByNameAndFullNameAndLicenseID(playerDTO.getName(), playerDTO.getSurname(), playerDTO.getLicenseID());
+        return findByNameAndSurnameAndLicenseID(playerDTO.getName(), playerDTO.getSurname(), playerDTO.getLicenseID());
     }
 }
