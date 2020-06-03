@@ -19,6 +19,7 @@ public class PlayerDAO {
     private String name;
     private String surname;
     private String licenseID;
+    private String title;
     private Float score;
     private Integer rating;
     private String gender;
@@ -34,6 +35,7 @@ public class PlayerDAO {
                 .rating(playerDAO.getRating())
                 .gender(playerDAO.getGender())
                 .club(playerDAO.getClub())
+                .title(playerDAO.getTitle())
                 .build();
     }
 }

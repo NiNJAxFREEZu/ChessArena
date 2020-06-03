@@ -15,6 +15,7 @@ public class PlayerDTO {
     private String name;
     private String surname;
     private String licenseID;
+    private String title;
     private Float score;
     private Integer rating;
     private String gender;
@@ -30,6 +31,7 @@ public class PlayerDTO {
                 .rating(playerDAO.getRating())
                 .gender(playerDAO.getGender())
                 .club(playerDAO.getClub())
+                .title(playerDAO.getTitle())
                 .build();
     }
 
@@ -43,6 +45,7 @@ public class PlayerDTO {
                 .rating(ExternalSystemsService.getRankingOfThePlayer(creatingPlayerForm.getLicenseID()))
                 .gender(creatingPlayerForm.getGender())
                 .club(creatingPlayerForm.getClub())
+                .title(creatingPlayerForm.getTitle())
                 .build();
     }
 }

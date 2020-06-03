@@ -93,6 +93,9 @@ public class TournamentService {
         currentTournament.endTournament();
     }
 
+    /**
+     * Opens .json containing tournament info.
+     */
     @SneakyThrows
     public void openFromFile(String filePath) {
         Path path = Paths.get(filePath);
