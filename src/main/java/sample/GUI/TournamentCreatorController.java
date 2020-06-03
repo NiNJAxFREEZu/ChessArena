@@ -2,17 +2,18 @@ package sample.GUI;
 
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.scene.control.ComboBox;
-import javafx.scene.control.Menu;
-import javafx.scene.control.MenuBar;
-import javafx.scene.control.MenuItem;
+import javafx.fxml.Initializable;
+import javafx.scene.control.*;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import org.springframework.stereotype.Component;
 import sample.Enums.TournamentType;
 
+import java.net.URL;
+import java.util.ResourceBundle;
+
 @Component
-public class TournamentCreatorController {
+public class TournamentCreatorController implements Initializable {
 
     @FXML
     public MenuItem menuFileQuit;
@@ -35,5 +36,10 @@ public class TournamentCreatorController {
     public void exit(ActionEvent actionEvent) {
         Stage stage = (Stage) tournamentCreatorVBox.getScene().getWindow();
         stage.close();
+    }
+
+    @Override
+    public void initialize(URL location, ResourceBundle resources) {
+        loadComboBox();
     }
 }
