@@ -82,7 +82,7 @@ public class TournamentService {
     }
 
     /**
-     * Ends tournament and creates protocol of it.
+     * Ends tournament and creates and saves protocol of it.
      *
      * @param protocolOutputPath           - path to folder where protocol file will be saved
      * @param functionToInvokeIfFileExists - supply function that asks user if he wants to override file

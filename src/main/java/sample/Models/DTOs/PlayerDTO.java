@@ -13,19 +13,23 @@ import sample.Service.ExternalSystemsService;
 public class PlayerDTO {
     private String playerID;
     private String name;
-    private String fullName;
+    private String surname;
     private String licenseID;
     private Float score;
     private Integer rating;
+    private String gender;
+    private String club;
 
     public static PlayerDTO map(PlayerDAO playerDAO) {
         return PlayerDTO.builder()
                 .playerID(playerDAO.get_id().toString())
                 .name(playerDAO.getName())
-                .fullName(playerDAO.getFullName())
+                .surname(playerDAO.getSurname())
                 .licenseID(playerDAO.getLicenseID())
                 .score(playerDAO.getScore())
                 .rating(playerDAO.getRating())
+                .gender(playerDAO.getGender())
+                .club(playerDAO.getClub())
                 .build();
     }
 
@@ -33,10 +37,12 @@ public class PlayerDTO {
         return PlayerDTO.builder()
                 .playerID(creatingPlayerForm.getPlayerID().toString())
                 .name(creatingPlayerForm.getName())
-                .fullName(creatingPlayerForm.getFullName())
+                .surname(creatingPlayerForm.getSurname())
                 .licenseID(creatingPlayerForm.getLicenseID())
                 .score(creatingPlayerForm.getScore())
                 .rating(ExternalSystemsService.getRankingOfThePlayer(creatingPlayerForm.getLicenseID()))
+                .gender(creatingPlayerForm.getGender())
+                .club(creatingPlayerForm.getClub())
                 .build();
     }
 }
