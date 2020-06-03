@@ -32,7 +32,7 @@ public class SplashScreenController {
 
     @FXML
     public void newTournament(ActionEvent actionEvent) throws IOException {
-        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("FXML/tournamentCreator.fxml"));
+        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/FXML/tournamentCreator.fxml"));
         Stage stage = new Stage();
         Parent tCreator = fxmlLoader.load();
         stage.setScene(new Scene(tCreator, 1024, 576));
