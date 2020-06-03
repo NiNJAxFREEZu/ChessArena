@@ -48,7 +48,7 @@
                      <children>
                         <AnchorPane layoutX="24.0" layoutY="55.0" prefHeight="32.0" prefWidth="410.0">
                            <children>
-                              <ComboBox layoutX="134.0" layoutY="1.0" prefHeight="31.0" prefWidth="271.0" />
+                              <ComboBox fx:id="tournamentTypeComboBox" layoutX="134.0" layoutY="1.0" onAction="#loadComboBox" prefHeight="31.0" prefWidth="271.0" />
                               <Label layoutY="6.0" text="Tournament type" />
                            </children>
                         </AnchorPane>
