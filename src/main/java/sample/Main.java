@@ -6,40 +6,47 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.ConfigurableApplicationContext;
-import sample.Service.TournamentService;
+import org.springframework.util.ResourceUtils;
+import sample.GUI.SplashScreenController;
 
-@SpringBootApplication
+import java.net.URL;
+
+@SpringBootApplication(scanBasePackages = "sample")
 public class Main extends Application {
-    @Autowired
-    private TournamentService tournamentService;
-
     private ConfigurableApplicationContext springContext;
-    private Parent rootNode;
+    private FXMLLoader fxmlLoader;
+    private SplashScreenController component;
 
     public static void main(String[] args) {
-        Application.launch(args);
+        launch(args);
+    }
+
+    @Override
+    public void init() throws Exception {
+        springContext = SpringApplication.run(Main.class);
+        fxmlLoader = new FXMLLoader();
+        fxmlLoader.setControllerFactory(springContext::getBean);
     }
 
     @Override
     public void start(Stage stage) throws Exception {
+        URL mainFxmlFile = ResourceUtils.getURL("src/main/resources/FXML/splash.fxml");
+
+        fxmlLoader.setLocation(mainFxmlFile);
+        Parent root = fxmlLoader.load();
+        component = fxmlLoader.getController();
+        stage.setTitle("Chess Arena");
         stage.initStyle(StageStyle.UNDECORATED);
-        stage.setScene(new Scene(rootNode, 1024, 576));
+        stage.setScene(new Scene(root, 1024, 576));
         stage.setMinWidth(1024);
         stage.setMinHeight(576);
         stage.show();
     }
 
-    public void init() throws Exception {
-        springContext = SpringApplication.run(Main.class);
-        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/FXML/splash.fxml"));
-        fxmlLoader.setControllerFactory(springContext::getBean);
-        rootNode = fxmlLoader.load();
-    }
-
+    @Override
     public void stop() throws Exception {
         springContext.close();
 

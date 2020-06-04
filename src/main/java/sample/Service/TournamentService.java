@@ -19,13 +19,14 @@ import java.util.stream.Collectors;
 
 @Service
 public class TournamentService {
-    private static RoundDTO currentRound;
-    private static RoundDTO previousRound;
-    private static TournamentInProgress currentTournament;
     @Autowired
     private TournamentRepository tournamentRepository;
     @Autowired
     private PairingService pairingService;
+
+    private static TournamentInProgress currentTournament;
+    private static RoundDTO currentRound;
+    private static RoundDTO previousRound;
 
     public static RoundDTO getCurrentRound() {
         return currentRound;
