@@ -4,52 +4,45 @@
 <?import javafx.scene.control.ToolBar?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
-<?import javafx.scene.layout.*?>
-<VBox xmlns:fx="http://javafx.com/fxml/1" fx:id="mainBackground" xmlns="http://javafx.com/javafx/8.0.171"
-      fx:controller="sample.GUI.SplashScreenController">
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.VBox?>
+
+<VBox fx:id="mainBackground" prefHeight="720.0" prefWidth="1280.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sample.GUI.SplashScreenController">
     <children>
         <AnchorPane maxHeight="-1.0" maxWidth="-1.0" prefHeight="576.0" prefWidth="1024.0" VBox.vgrow="ALWAYS">
             <children>
-                <VBox fx:id="tournamentCreatorVBox" alignment="CENTER" visible="false" AnchorPane.bottomAnchor="0.0"
-                      AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                <VBox fx:id="tournamentCreatorVBox" alignment="CENTER" visible="false" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                     <children>
-                        <fx:include source="tournamentCreator.fxml"/>
+                        <fx:include source="tournamentCreator.fxml" />
                     </children>
                 </VBox>
-                <VBox fx:id="createPlayerPopup" visible="false" alignment="TOP_CENTER" AnchorPane.bottomAnchor="0.0"
-                      AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                <VBox fx:id="createPlayerPopup" alignment="TOP_CENTER" visible="false" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                     <children>
-                        <fx:include source="createPlayerPopup.fxml"/>
+                        <fx:include source="createPlayerPopup.fxml" />
                     </children>
                 </VBox>
-                <ToolBar orientation="VERTICAL" prefHeight="576.0" prefWidth="165.0" fx:id="toolbar">
+                <ToolBar fx:id="toolbar" orientation="VERTICAL" prefHeight="720.0" prefWidth="165.0">
                     <items>
                         <AnchorPane prefHeight="97.0" prefWidth="151.0">
                             <children>
-                                <Button fx:id="newTournamentButton" defaultButton="true" layoutX="9.0" layoutY="14.0"
-                                        mnemonicParsing="false" onAction="#newTournament" prefHeight="26.0"
-                                        prefWidth="134.0" text="New tournament" textAlignment="CENTER"/>
-                                <Button fx:id="openButton" layoutX="9.0" layoutY="56.0" mnemonicParsing="false"
-                                        onAction="#openFile" prefHeight="31.0" prefWidth="133.0" text="Open..."
-                                        textAlignment="CENTER"/>
+                                <Button fx:id="newTournamentButton" defaultButton="true" layoutX="9.0" layoutY="14.0" mnemonicParsing="false" onAction="#newTournament" prefHeight="26.0" prefWidth="134.0" text="New tournament" textAlignment="CENTER" />
+                                <Button fx:id="openButton" layoutX="9.0" layoutY="56.0" mnemonicParsing="false" onAction="#openFile" prefHeight="31.0" prefWidth="133.0" text="Open..." textAlignment="CENTER" />
                             </children>
                         </AnchorPane>
-                        <AnchorPane prefHeight="415.0" prefWidth="151.0"/>
+                        <AnchorPane prefHeight="560.0" prefWidth="151.0" />
                         <AnchorPane prefHeight="22.0" prefWidth="151.0">
                             <children>
-                                <Button fx:id="closeButton" cancelButton="true" layoutX="6.0" layoutY="6.0"
-                                        mnemonicParsing="false" onAction="#exit" prefHeight="31.0" prefWidth="139.0"
-                                        text="Exit"/>
+                                <Button fx:id="closeButton" cancelButton="true" layoutX="6.0" layoutY="6.0" mnemonicParsing="false" onAction="#exit" prefHeight="31.0" prefWidth="139.0" text="Exit" />
                             </children>
                         </AnchorPane>
                     </items>
                 </ToolBar>
-                <BorderPane layoutX="165.0" layoutY="3.0" prefHeight="570.0" prefWidth="856.0" fx:id="borderPane">
+                <BorderPane fx:id="borderPane" layoutX="165.0" prefHeight="723.0" prefWidth="1114.0">
                     <center>
-                        <ImageView fitHeight="243.0" fitWidth="248.0" pickOnBounds="true" preserveRatio="true"
-                                   BorderPane.alignment="CENTER">
+                        <ImageView fitHeight="243.0" fitWidth="248.0" pickOnBounds="true" preserveRatio="true" BorderPane.alignment="CENTER">
                             <image>
-                                <Image url="@../images/logo.png"/>
+                                <Image url="@../images/logo.png" />
                             </image>
                         </ImageView>
                     </center>

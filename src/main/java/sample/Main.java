@@ -40,9 +40,9 @@ public class Main extends Application {
         component = fxmlLoader.getController();
         stage.setTitle("Chess Arena");
         stage.initStyle(StageStyle.UNDECORATED);
-        stage.setScene(new Scene(root, 1024, 576));
-        stage.setMinWidth(1024);
-        stage.setMinHeight(576);
+        stage.setScene(new Scene(root, 1280, 720));
+        stage.setMinWidth(1280);
+        stage.setMinHeight(720);
         stage.show();
     }
 
