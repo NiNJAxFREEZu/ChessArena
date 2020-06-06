@@ -15,8 +15,9 @@ import java.util.stream.Collectors;
 @NoArgsConstructor
 @Getter
 @Setter
-@Builder
-public class Tournament {
+@Builder(toBuilder = true)
+@ToString
+public class Tournament implements TournamentInProgress {
     private String name;
     private List<PlayerDTO> playerList;
     private List<RoundDTO> rounds;
@@ -51,6 +52,17 @@ public class Tournament {
                 .date(Date.from(Instant.ofEpochMilli(creatingTournamentForm.getDate())))
                 .tournamentType(creatingTournamentForm.getTournamentType())
                 .playerList(Collections.emptyList())
+                .numberOfRounds(creatingTournamentForm.getAmountOfRounds())
+                .build();
+    }
+
+    public static Tournament create(CreatingTournamentForm creatingTournamentForm, List<PlayerDTO> playerList) {
+        return Tournament.builder()
+                .name(creatingTournamentForm.getName())
+                .date(Date.from(Instant.ofEpochMilli(creatingTournamentForm.getDate())))
+                .tournamentType(creatingTournamentForm.getTournamentType())
+                .playerList(playerList)
+                .numberOfRounds(creatingTournamentForm.getAmountOfRounds())
                 .build();
     }
 }

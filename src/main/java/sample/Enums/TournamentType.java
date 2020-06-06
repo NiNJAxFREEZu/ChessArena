@@ -13,4 +13,13 @@ public enum TournamentType {
 
     @Getter
     private String stringValue;
+
+    public static TournamentType resolveFromString(String value) {
+        for (TournamentType tournamentType : TournamentType.values()) {
+            if (tournamentType.getStringValue().equals(value)) {
+                return tournamentType;
+            }
+        }
+        return NotSpecified;
+    }
 }

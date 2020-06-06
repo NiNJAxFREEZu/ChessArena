@@ -8,6 +8,7 @@ import sample.Enums.Score;
 import sample.Models.DTOs.*;
 import sample.MongoConnector.TournamentRepository;
 
+import java.io.File;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -24,7 +25,7 @@ public class TournamentService {
     @Autowired
     private PairingService pairingService;
 
-    private static TournamentInProgress currentTournament;
+    private static Tournament currentTournament;
     private static RoundDTO currentRound;
     private static RoundDTO previousRound;
 
@@ -66,7 +67,7 @@ public class TournamentService {
     }
 
     public void startTournament(CreatingTournamentForm creatingTournamentForm, List<PlayerDTO> players) {
-        currentTournament = new TournamentInProgress(Tournament.create(creatingTournamentForm));
+        currentTournament = Tournament.create(creatingTournamentForm);
         currentRound = pairingService.getPlayerPairing(players);
         currentTournament.getRounds().add(currentRound);
         previousRound = null;
@@ -78,8 +79,10 @@ public class TournamentService {
         currentTournament.getRounds().add(currentRound);
     }
 
-    public void createTournament(CreatingTournamentForm creatingTournamentForm) {
+    public void createTournament(CreatingTournamentForm creatingTournamentForm, List<PlayerDTO> players) {
         Tournament tournament = Tournament.create(creatingTournamentForm);
+        tournament.setPlayerList(players);
+        currentTournament = tournament;
     }
 
     /**
@@ -91,7 +94,7 @@ public class TournamentService {
     @SneakyThrows
     public void endTournament(String protocolOutputPath, Supplier<Boolean> functionToInvokeIfFileExists) {
         saveProtocol(protocolOutputPath, functionToInvokeIfFileExists);
-        currentTournament.endTournament();
+//        currentTournament.endTournament();
     }
 
     /**
@@ -110,7 +113,7 @@ public class TournamentService {
                 .get();
 
         Gson tournamentGson = new Gson();
-        currentTournament = tournamentGson.fromJson(savedTournament, TournamentInProgress.class);
+        currentTournament = tournamentGson.fromJson(savedTournament, Tournament.class);
     }
 
     /**
@@ -121,7 +124,6 @@ public class TournamentService {
      * @param folderPath                   - PATH
      * @param functionToInvokeIfFileExists - supply function that asks user if he wants to override file
      */
-    @SneakyThrows
     public void saveToFile(String folderPath, String fileName, Supplier<Boolean> functionToInvokeIfFileExists) {
         Path path = resolveTournamentFilePath(folderPath, fileName);
 
@@ -130,18 +132,40 @@ public class TournamentService {
         }
 
         String tournamentJson = new Gson().toJson(currentTournament);
-        Path file = Files.createFile(path);
-        Files.write(file, Collections.singleton(tournamentJson));
+        try {
+            File jsonFile = new File(path.toString());
+            if (!jsonFile.exists()) {
+                boolean createdDirs = jsonFile.getParentFile().mkdirs();
+                boolean createdFile = jsonFile.createNewFile();
+                if (!createdDirs && !createdFile) {
+                    throw new Exception("Failed to create file and/or directory");
+                }
+            }
+            Files.write(jsonFile.toPath(), Collections.singleton(tournamentJson));
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     private Path resolveTournamentFilePath(String folderPath, String fileName) {
         String defaultFileName;
+        String defaultFolderName;
+
         if (fileName == null) {
-            defaultFileName = currentTournament.getName().concat(LocalDate.now().toString());
+            defaultFileName = currentTournament.getName()
+                    .concat("_")
+                    .concat(LocalDate.now().toString());
         } else {
             defaultFileName = fileName;
         }
-        return Paths.get(folderPath + "/" + defaultFileName + ".json").toAbsolutePath();
+
+        if (folderPath == null) {
+            defaultFolderName = System.getProperty("user.home") + "/Desktop";
+        } else {
+            defaultFolderName = folderPath;
+        }
+
+        return Paths.get(defaultFolderName + "/" + defaultFileName + ".json").toAbsolutePath();
     }
 
     private Path resolveProtocolFilePath(String protocolFileOutputPath) {
@@ -151,7 +175,7 @@ public class TournamentService {
 
     @SneakyThrows
     private void saveProtocol(String protocolOutputPath, Supplier<Boolean> functionToInvokeIfFileExists) {
-        String protocol = currentTournament.createProtocol();
+//        String protocol = currentTournament.createProtocol();
         Path protocolFilePath = resolveProtocolFilePath(protocolOutputPath);
 
         if (!checkIfCanCreateFile(protocolFilePath, functionToInvokeIfFileExists)) {
@@ -159,7 +183,7 @@ public class TournamentService {
         }
 
         Path file = Files.createFile(protocolFilePath);
-        Files.write(file, Collections.singleton(protocol));
+//        Files.write(file, Collections.singleton(protocol));
     }
 
     @SneakyThrows

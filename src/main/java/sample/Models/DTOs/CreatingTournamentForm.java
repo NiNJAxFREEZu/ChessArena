@@ -13,4 +13,5 @@ public class CreatingTournamentForm {
     private String name;
     private Long date;
     private TournamentType tournamentType;
+    private Integer amountOfRounds;
 }

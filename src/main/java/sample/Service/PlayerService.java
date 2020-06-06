@@ -1,5 +1,7 @@
 package sample.Service;
 
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import sample.Models.DAOs.PlayerDAO;
@@ -28,5 +30,11 @@ public class PlayerService {
 
     public List<PlayerDTO> getAllPlayers() {
         return playersRepository.findAll().stream().map(PlayerDTO::map).collect(Collectors.toList());
+    }
+
+    public ObservableList<PlayerDTO> getAllEntrants() {
+        List<PlayerDTO> collect = playersRepository.findAll().stream().map(PlayerDTO::map).collect(Collectors.toList());
+
+        return FXCollections.observableList(collect);
     }
 }

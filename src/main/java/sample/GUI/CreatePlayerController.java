@@ -1,18 +1,23 @@
 package sample.GUI;
 
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.control.TextField;
+import javafx.fxml.Initializable;
+import javafx.scene.control.*;
+import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.Pane;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import sample.Models.DTOs.CreatingPlayerForm;
+import sample.Models.DTOs.PlayerDTO;
 import sample.Service.PlayerService;
 
+import java.net.URL;
+import java.util.ResourceBundle;
+
 @Controller
-public class CreatePlayerController {
+public class CreatePlayerController implements Initializable {
     @FXML
     public Pane createPlayerPopup;
     @FXML
@@ -33,10 +38,31 @@ public class CreatePlayerController {
     public Label failLabel;
     @FXML
     public Label successLabel;
+    @FXML
+    public Button cancel;
+    @FXML
+    public TableView<PlayerDTO> existingPlayersTable;
+    @FXML
+    public TableColumn<PlayerDTO, String> nameCol;
+    @FXML
+    public TableColumn<PlayerDTO, String> surnameCol;
+    @FXML
+    public TableColumn<PlayerDTO, String> licenseCol;
+    @FXML
+    public TableColumn<PlayerDTO, Integer> ratingCol;
+    @FXML
+    public TableColumn<PlayerDTO, String> genderCol;
+    @FXML
+    public TableColumn<PlayerDTO, String> clubCol;
+    @FXML
+    public TableColumn<PlayerDTO, String> titleCol;
+
     @Autowired
     private PlayerService playerService;
     @Autowired
     private SplashScreenController splashScreenController;
+    @Autowired
+    private TournamentCreatorController tournamentCreatorController;
 
     @FXML
     public void createPlayer(ActionEvent actionEvent) {
@@ -55,6 +81,7 @@ public class CreatePlayerController {
         try {
             playerService.createPlayer(creatingPlayerForm);
             successLabel.setVisible(true);
+            refreshTable();
         } catch (Exception e) {
             failLabel.setVisible(true);
             e.printStackTrace();
@@ -63,6 +90,47 @@ public class CreatePlayerController {
 
     @FXML
     public void cancel(ActionEvent actionEvent) {
+        failLabel.setVisible(false);
+        successLabel.setVisible(false);
         splashScreenController.closePlayerCreator();
     }
+
+    @Override
+    public void initialize(URL location, ResourceBundle resources) {
+        setCellValueFactories();
+        initDoubleClick();
+        refreshTable();
+    }
+
+    private void refreshTable() {
+        ObservableList<PlayerDTO> allEntrants = playerService.getAllEntrants();
+        existingPlayersTable.setItems(allEntrants);
+    }
+
+
+    private void setCellValueFactories() {
+        nameCol.setCellValueFactory(new PropertyValueFactory<>("name"));
+        surnameCol.setCellValueFactory(new PropertyValueFactory<>("surname"));
+        licenseCol.setCellValueFactory(new PropertyValueFactory<>("licenseID"));
+        ratingCol.setCellValueFactory(new PropertyValueFactory<>("title"));
+        genderCol.setCellValueFactory(new PropertyValueFactory<>("rating"));
+        clubCol.setCellValueFactory(new PropertyValueFactory<>("gender"));
+        titleCol.setCellValueFactory(new PropertyValueFactory<>("club"));
+    }
+
+    private void initDoubleClick() {
+        existingPlayersTable.setRowFactory(tv -> {
+            TableRow<PlayerDTO> row = new TableRow<>();
+            row.setOnMouseClicked(event -> {
+                if (event.getClickCount() == 2 && (!row.isEmpty())) {
+                    PlayerDTO rowData = row.getItem();
+                    tournamentCreatorController.addPlayer(rowData);
+                    cancel(null);
+                }
+            });
+            return row;
+        });
+    }
+
+
 }
