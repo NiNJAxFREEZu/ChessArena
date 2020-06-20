@@ -95,6 +95,10 @@ public class TournamentService {
         currentTournament.getRounds().add(currentRound);
     }
 
+    private void updateRatings() {
+
+    }
+
     public void createTournament(CreatingTournamentForm creatingTournamentForm, List<PlayerDTO> players) {
         Tournament tournament = Tournament.create(creatingTournamentForm);
         tournament.setPlayerList(players);
