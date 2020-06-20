@@ -22,8 +22,8 @@ public class Tournament implements TournamentInProgress {
     private List<PlayerDTO> playerList;
     private List<RoundDTO> rounds;
     private Integer roundNo;
-    private TournamentType tournamentType;
     private Integer numberOfRounds;
+    private TournamentType tournamentType;
     private Date date;
 
     public static Tournament map(TournamentDAO tournamentDAO) {

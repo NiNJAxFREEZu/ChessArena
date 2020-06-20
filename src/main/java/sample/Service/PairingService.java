@@ -2,6 +2,7 @@ package sample.Service;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import sample.Enums.TournamentType;
 import sample.Models.DTOs.GameDTO;
 import sample.Models.DTOs.PlayerDTO;
 import sample.Models.DTOs.RoundDTO;
@@ -42,16 +43,52 @@ public class PairingService {
                 .build();
     }
 
-    //VERY importanet methoed
+    /*
+    VERY importanet methoed
+    RULE 0 -> pair players for first round according to their ratings
+    RULE 1 -> pair players according to their tournament round history (two players cannot play together twice)
+    */
     RoundDTO getPlayerPairings() {
+        //First round
+        if(TournamentService.currentTournament.getRoundNo() == 1)
+            return getFirstRoundPairings();
+
+        //Round robin
+        else if (TournamentService.currentTournament.getTournamentType() == TournamentType.RoundRobin)
+            return getRoundPairings();
+
+        //Round robin
+        else if (TournamentService.currentTournament.getTournamentType() == TournamentType.Swiss)
+            return getSwissPairings();
+
+        //TODO
+        //Double round robin
+        //Heads up
+
+        else return new RoundDTO();
+    }
+
+    private RoundDTO getFirstRoundPairings() {
+
         return null;
     }
+
+    private RoundDTO getSwissPairings() {
+
+        return null;
+    }
+
+    private RoundDTO getRoundPairings() {
+
+        return null;
+    }
+
 
     private void buildPlayersPairingHistory() {
         HashMap<String, HashSet<String>> pairingHistory = new HashMap<>();
 
         //Adding players to hashmap
-        for(PlayerDTO player : playerService.getAllPlayers()) {
+        for(PlayerDTO player : TournamentService.currentTournament.getPlayerList()) {
             pairingHistory.put(player.getPlayerID(), new HashSet<>());
         }
 
