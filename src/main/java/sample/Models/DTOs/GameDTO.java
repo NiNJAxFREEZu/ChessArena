@@ -27,4 +27,14 @@ public class GameDTO {
                 .score(gameDAO.getScore())
                 .build();
     }
+
+    public static GameDTO create(Integer chessboardNo, PlayerDTO... players) {
+        return GameDTO.builder()
+                .playerWhiteID(players[0].getPlayerID())
+                .playerBlackID(players[1].getPlayerID())
+                .playerWhiteShortName(players[0].getShortName())
+                .playerBlackShortName(players[1].getShortName())
+                .chessboardNo(chessboardNo)
+                .build();
+    }
 }
