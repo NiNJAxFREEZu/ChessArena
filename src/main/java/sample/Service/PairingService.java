@@ -7,9 +7,7 @@ import sample.Models.DTOs.GameDTO;
 import sample.Models.DTOs.PlayerDTO;
 import sample.Models.DTOs.RoundDTO;
 
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
+import java.util.*;
 
 @Service
 public class PairingService {
@@ -44,7 +42,7 @@ public class PairingService {
     }
 
     /*
-    VERY importanet methoed
+    VERY importanet methoed - for now let's assume that player count is EVEN
     RULE 0 -> pair players for first round according to their ratings
     RULE 1 -> pair players according to their tournament round history (two players cannot play together twice)
     */
@@ -53,19 +51,22 @@ public class PairingService {
         if(TournamentService.currentTournament.getRoundNo() == 1)
             return getFirstRoundPairings();
 
-        //Round robin
-        else if (TournamentService.currentTournament.getTournamentType() == TournamentType.RoundRobin)
-            return getRoundPairings();
+        else {
+            buildPlayersPairingHistory();
 
-        //Round robin
-        else if (TournamentService.currentTournament.getTournamentType() == TournamentType.Swiss)
-            return getSwissPairings();
+            //Round robin
+            if (TournamentService.currentTournament.getTournamentType() == TournamentType.RoundRobin)
+                return getRoundRobinPairings();
 
-        //TODO
-        //Double round robin
-        //Heads up
+                //Round robin
+            else if (TournamentService.currentTournament.getTournamentType() == TournamentType.Swiss)
+                return getSwissPairings();
 
-        else return new RoundDTO();
+            //TODO
+            //Double round robin
+            //Heads up
+        }
+        return new RoundDTO();
     }
 
     private RoundDTO getFirstRoundPairings() {
@@ -74,11 +75,30 @@ public class PairingService {
     }
 
     private RoundDTO getSwissPairings() {
-
         return null;
     }
 
-    private RoundDTO getRoundPairings() {
+    private RoundDTO getRoundRobinPairings() {
+
+        List<PlayerDTO> playersToPair = new ArrayList<>();
+        List<GameDTO> newRoundGames = new ArrayList<>();
+        Collections.copy(playersToPair, TournamentService.currentTournament.getPlayerList());
+
+        int chessBoardNo = 1;
+        while (playersToPair.size() > 0) {
+            int playerListIndex = 0;
+            PlayerDTO player1 = playersToPair.get(playerListIndex), player2;
+
+            //Looking for an opponent for white player
+            do {
+                player2 = playersToPair.get(++playerListIndex);
+            }
+            while(!playedTogether(player1, player2));
+
+            playersToPair.remove(player1);
+            playersToPair.remove(player2);
+            chessBoardNo++;
+        }
 
         return null;
     }
