@@ -79,6 +79,8 @@ public class TournamentCreatorController implements Initializable {
     public MenuItem saveAsBtn;
     @FXML
     public MenuItem preferencesBtn;
+    @FXML
+    public Button finishButton;
 
     @Autowired
     private SplashScreenController splashScreenController;
@@ -197,11 +199,13 @@ public class TournamentCreatorController implements Initializable {
         }
     }
 
+    @FXML
     public void finish(ActionEvent actionEvent) {
         finish();
     }
 
-    public void finish(KeyEvent keyEvent) {
+    @FXML
+    public void finishKey(KeyEvent keyEvent) {
         if (keyEvent.getCode() == KeyCode.ENTER) {
             finish();
         }

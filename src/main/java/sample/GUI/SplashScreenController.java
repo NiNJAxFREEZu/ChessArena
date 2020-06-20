@@ -9,6 +9,7 @@ import javafx.scene.control.ToolBar;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 
 import java.io.IOException;
@@ -32,6 +33,7 @@ public class SplashScreenController {
     @FXML
     private CreatePlayerController createPlayerController;
     @FXML
+    @Autowired
     private TournamentManagerController tournamentManagerController;
 
     @FXML
@@ -88,6 +90,7 @@ public class SplashScreenController {
         createPlayerPopup.setVisible(false);
         borderPane.setVisible(false);
         toolbar.setVisible(false);
+
         tournamentManagerController.open();
     }
 

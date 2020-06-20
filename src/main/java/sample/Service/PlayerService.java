@@ -6,7 +6,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import sample.Models.DAOs.PlayerDAO;
 import sample.Models.DTOs.CreatingPlayerForm;
+import sample.Models.DTOs.GameDTO;
 import sample.Models.DTOs.PlayerDTO;
+import sample.Models.DTOs.Tournament;
 import sample.MongoConnector.PlayersRepository;
 
 import java.util.List;
@@ -44,5 +46,27 @@ public class PlayerService {
                         .findById(playerID)
                         .orElseThrow(RuntimeException::new)
         );
+    }
+
+    public void assignShortNames(List<GameDTO> games, Tournament tournament) {
+        for (GameDTO game : games) {
+            String playerBlackID = game.getPlayerBlackID();
+            String playerWhiteID = game.getPlayerWhiteID();
+
+            PlayerDTO blackPlayer = tournament.getPlayerList()
+                    .stream()
+                    .filter(e -> e.getPlayerID().equals(playerBlackID))
+                    .findFirst()
+                    .orElseThrow(RuntimeException::new);
+
+            PlayerDTO whitePlayer = tournament.getPlayerList()
+                    .stream()
+                    .filter(e -> e.getPlayerID().equals(playerWhiteID))
+                    .findFirst()
+                    .orElseThrow(RuntimeException::new);
+
+            game.setPlayerWhiteShortName(whitePlayer.getShortName());
+            game.setPlayerBlackShortName(blackPlayer.getShortName());
+        }
     }
 }

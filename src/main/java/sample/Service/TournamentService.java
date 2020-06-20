@@ -1,6 +1,8 @@
 package sample.Service;
 
 import com.google.gson.Gson;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import lombok.SneakyThrows;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -13,8 +15,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.time.LocalDate;
-import java.util.Collections;
-import java.util.List;
+import java.util.*;
 import java.util.function.Supplier;
 import java.util.stream.Collectors;
 
@@ -29,8 +30,23 @@ public class TournamentService {
     private static RoundDTO currentRound;
     private static RoundDTO previousRound;
 
+    public static ObservableList<GameDTO> getCurrentGamesList() {
+        RoundDTO round = getPlayerPairing(currentTournament.getPlayerList());
+
+        if (currentRound == null) {
+            return FXCollections.observableList(new ArrayList<>(round.getGames()));
+        } else {
+            return FXCollections.observableList(new ArrayList<>(currentRound.getGames()));
+        }
+    }
+
     public static RoundDTO getCurrentRound() {
         return currentRound;
+    }
+
+    public static Integer getCurrentRoundNo() {
+        if (currentRound == null) return 0;
+        else return currentRound.getNr();
     }
 
     public void setScores(Score score, Integer chessboardNo) {
@@ -97,31 +113,30 @@ public class TournamentService {
 //        currentTournament.endTournament();
     }
 
-    /**
-     * Opens .json containing tournament info.
-     */
-    @SneakyThrows
-    public void openFromFile(String filePath) {
-        String resolvedFilePath = System.getProperty("user.home") + "/Desktop";
+    static RoundDTO getPlayerPairing(List<PlayerDTO> players) {
+        GameDTO game1 = GameDTO.builder()
+                .chessboardNo(1)
+                .playerBlackID("playerBlackID1")
+                .playerWhiteID("playerWhiteID1")
+                .playerBlackShortName(players.get(0).getShortName())
+                .playerWhiteShortName(players.get(1).getShortName())
+                .build();
 
-        if (!filePath.contains("/")) {
-            resolvedFilePath = filePath;
-        } else {
-            resolvedFilePath = resolvedFilePath.concat("/").concat(filePath);
-        }
+        GameDTO game2 = GameDTO.builder()
+                .chessboardNo(2)
+                .playerBlackID("playerBlackID2")
+                .playerWhiteID("playerWhiteID2")
+                .playerBlackShortName(players.get(0).getShortName())
+                .playerWhiteShortName(players.get(1).getShortName())
+                .build();
+        HashSet<GameDTO> set = new HashSet<>();
+        set.add(game1);
+        set.add(game2);
 
-        Path path = Paths.get(resolvedFilePath);
-
-        if (!Files.exists(path)) throw new RuntimeException("Such file doesn't exist!");
-
-        String savedTournament = Files
-                .readAllLines(path)
-                .stream()
-                .reduce(String::concat)
-                .get();
-
-        Gson tournamentGson = new Gson();
-        currentTournament = tournamentGson.fromJson(savedTournament, Tournament.class);
+        return RoundDTO.builder()
+                .nr(1)
+                .games(set)
+                .build();
     }
 
     /**
@@ -205,5 +220,41 @@ public class TournamentService {
             }
         }
         return true;
+    }
+
+    /**
+     * Opens .json containing tournament info.
+     */
+    @SneakyThrows
+    public void openFromFile(String filePath) {
+        String resolvedFilePath = System.getProperty("user.home") + "/Desktop";
+
+        if (filePath.contains("/")) {
+            resolvedFilePath = filePath;
+        } else {
+            resolvedFilePath = resolvedFilePath.concat("/").concat(filePath).concat(".json");
+        }
+
+        Path path = Paths.get(resolvedFilePath).toAbsolutePath();
+
+        if (!Files.exists(path)) throw new RuntimeException("Such file doesn't exist!");
+
+        String savedTournament = Files
+                .readAllLines(path)
+                .stream()
+                .reduce(String::concat)
+                .get();
+
+        Gson tournamentGson = new Gson();
+        currentTournament = tournamentGson.fromJson(savedTournament, Tournament.class);
+
+        if (currentTournament.getRounds() != null && !currentTournament.getRounds().isEmpty()) {
+            currentRound = currentTournament.getRounds()
+                    .stream()
+                    .max(Comparator.comparing(RoundDTO::getNr))
+                    .get();
+        } else {
+            currentRound = null;
+        }
     }
 }
