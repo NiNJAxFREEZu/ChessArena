@@ -82,7 +82,7 @@ public class PairingService {
     private RoundDTO getRoundRobinPairings() {
         buildPlayersPairingHistory();
         List<PlayerDTO> playersToPair = new ArrayList<>();
-        List<GameDTO> newRoundGames = new ArrayList<>();
+        Set<GameDTO> newRoundGames = new HashSet<>();
         Collections.copy(playersToPair, TournamentService.currentTournament.getPlayerList());
 
         int chessBoardNo = 1;
@@ -96,12 +96,13 @@ public class PairingService {
             }
             while(!playedTogether(player1, player2));
 
+            newRoundGames.add(GameDTO.create(chessBoardNo, player1, player2));
             playersToPair.remove(player1);
             playersToPair.remove(player2);
             chessBoardNo++;
         }
         //TODO create Round and Games
-        return null;
+        return RoundDTO.builder().games(newRoundGames).build();
     }
 
 
