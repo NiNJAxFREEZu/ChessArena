@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+
+<AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/10.0.2-internal" xmlns:fx="http://javafx.com/fxml/1" fx:controller="FXML.Score">
+   <children>
+      <Accordion layoutX="181.0" layoutY="44.0" />
+      <ButtonBar layoutX="53.0" layoutY="64.0" prefHeight="40.0" prefWidth="200.0" />
+      <TableView layoutX="-2.0" layoutY="64.0" prefHeight="336.0" prefWidth="600.0">
+        <columns>
+          <TableColumn prefWidth="75.0" text="Name" />
+          <TableColumn prefWidth="75.0" text="Surname" />
+            <TableColumn prefWidth="75.0" text="Ranking" />
+            <TableColumn prefWidth="75.0" text="Title" />
+            <TableColumn prefWidth="75.0" text="Gender" />
+            <TableColumn prefWidth="75.0" text="Club" />
+            <TableColumn prefWidth="75.0" text="Licence no" />
+            <TableColumn prefWidth="72.79998779296875" text="Score" />
+        </columns>
+      </TableView>
+      <Label layoutX="214.0" layoutY="14.0" text="Score of players">
+         <font>
+            <Font size="24.0" />
+         </font></Label>
+   </children>
+</AnchorPane>
