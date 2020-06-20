@@ -2,7 +2,6 @@ package sample.Service;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import sample.Enums.TournamentType;
 import sample.Models.DTOs.GameDTO;
 import sample.Models.DTOs.PlayerDTO;
 import sample.Models.DTOs.RoundDTO;
@@ -52,21 +51,23 @@ public class PairingService {
             return getFirstRoundPairings();
 
         else {
-            buildPlayersPairingHistory();
+            switch (TournamentService.currentTournament.getTournamentType()) {
+                case RoundRobin:
+                    return getRoundRobinPairings();
 
-            //Round robin
-            if (TournamentService.currentTournament.getTournamentType() == TournamentType.RoundRobin)
-                return getRoundRobinPairings();
+                case DoubleRoundRobin:
+                    return null;
 
-                //Round robin
-            else if (TournamentService.currentTournament.getTournamentType() == TournamentType.Swiss)
-                return getSwissPairings();
+                case HeadsUp:
+                    return null;
 
-            //TODO
-            //Double round robin
-            //Heads up
+                case Swiss:
+                    return getSwissPairings();
+
+                default:
+                    return null;
+            }
         }
-        return new RoundDTO();
     }
 
     private RoundDTO getFirstRoundPairings() {
@@ -79,7 +80,7 @@ public class PairingService {
     }
 
     private RoundDTO getRoundRobinPairings() {
-
+        buildPlayersPairingHistory();
         List<PlayerDTO> playersToPair = new ArrayList<>();
         List<GameDTO> newRoundGames = new ArrayList<>();
         Collections.copy(playersToPair, TournamentService.currentTournament.getPlayerList());
@@ -89,7 +90,7 @@ public class PairingService {
             int playerListIndex = 0;
             PlayerDTO player1 = playersToPair.get(playerListIndex), player2;
 
-            //Looking for an opponent for white player
+            //Looking for an opponent for player 1
             do {
                 player2 = playersToPair.get(++playerListIndex);
             }
