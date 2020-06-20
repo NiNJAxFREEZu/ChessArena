@@ -25,7 +25,7 @@ public class TournamentService {
     @Autowired
     private PairingService pairingService;
 
-    private static Tournament currentTournament;
+    public static Tournament currentTournament;
     private static RoundDTO currentRound;
     private static RoundDTO previousRound;
 

@@ -6,6 +6,7 @@ import sample.Models.DTOs.GameDTO;
 import sample.Models.DTOs.PlayerDTO;
 import sample.Models.DTOs.RoundDTO;
 
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 
@@ -40,8 +41,27 @@ public class PairingService {
                 .build();
     }
 
+    //VERY importanet methoed
     RoundDTO getPlayerPairings() {
         return null;
+    }
+
+    HashMap<String, HashSet<String>> getPlayersPairingHistory() {
+        HashMap<String, HashSet<String>> pairingHistory = new HashMap<>();
+
+        //Adding players to hashmap
+        for(PlayerDTO player : playerService.getAllPlayers()) {
+            pairingHistory.put(player.getPlayerID(), new HashSet<>());
+        }
+
+        for (RoundDTO round : TournamentService.currentTournament.getRounds()) {
+            for(GameDTO game : round.getGames()) {
+                pairingHistory.get(game.getPlayerWhiteID()).add(game.getPlayerBlackID());
+                pairingHistory.get(game.getPlayerBlackID()).add(game.getPlayerWhiteID());
+            }
+        }
+
+        return pairingHistory;
     }
 
     boolean playedTogether(PlayerDTO player1, PlayerDTO player2) {
