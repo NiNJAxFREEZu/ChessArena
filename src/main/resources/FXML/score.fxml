@@ -2,6 +2,7 @@
 
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
 
 <AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/10.0.2-internal" xmlns:fx="http://javafx.com/fxml/1" fx:controller="FXML.Score">
    <children>
@@ -19,5 +20,9 @@
             <TableColumn prefWidth="72.79998779296875" text="Score" />
         </columns>
       </TableView>
+      <Label layoutX="214.0" layoutY="14.0" text="Score of players">
+         <font>
+            <Font size="24.0" />
+         </font></Label>
    </children>
 </AnchorPane>
