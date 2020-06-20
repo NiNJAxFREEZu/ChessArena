@@ -14,6 +14,7 @@ import java.util.List;
 public class PairingService {
     @Autowired
     private PlayerService playerService;
+    private HashMap<String, HashSet<String>> pairingHistory;
 
     RoundDTO getPlayerPairings(List<PlayerDTO> players) {
         GameDTO game1 = GameDTO.builder()
@@ -46,7 +47,7 @@ public class PairingService {
         return null;
     }
 
-    HashMap<String, HashSet<String>> getPlayersPairingHistory() {
+    private void buildPlayersPairingHistory() {
         HashMap<String, HashSet<String>> pairingHistory = new HashMap<>();
 
         //Adding players to hashmap
@@ -54,18 +55,21 @@ public class PairingService {
             pairingHistory.put(player.getPlayerID(), new HashSet<>());
         }
 
+        //Building hashsets
         for (RoundDTO round : TournamentService.currentTournament.getRounds()) {
             for(GameDTO game : round.getGames()) {
                 pairingHistory.get(game.getPlayerWhiteID()).add(game.getPlayerBlackID());
                 pairingHistory.get(game.getPlayerBlackID()).add(game.getPlayerWhiteID());
             }
         }
-
-        return pairingHistory;
+        this.pairingHistory = pairingHistory;
     }
 
-    boolean playedTogether(PlayerDTO player1, PlayerDTO player2) {
-        //TODO
+    private boolean playedTogether(PlayerDTO player1, PlayerDTO player2) {
+        for(String player2ID : pairingHistory.get(player1.getPlayerID())) {
+            if(player2.getPlayerID().equals(player2ID))
+                return true;
+        }
         return false;
     }
 
