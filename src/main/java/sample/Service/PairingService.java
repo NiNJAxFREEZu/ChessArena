@@ -7,6 +7,7 @@ import sample.Models.DTOs.PlayerDTO;
 import sample.Models.DTOs.RoundDTO;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 @Service
 public class PairingService {
@@ -71,8 +72,31 @@ public class PairingService {
     }
 
     private RoundDTO getFirstRoundPairings() {
+        List<PlayerDTO> playersToPair = new LinkedList<>();
+        Collections.copy(playersToPair, TournamentService.currentTournament.getPlayerList());
+        Set<GameDTO> firstRoundGames = new HashSet<>();
+        int chessBoardNo = 1;
 
-        return null;
+        playersToPair = playersToPair.stream()
+                .sorted(Comparator.comparing(PlayerDTO::getRating))
+                .collect(Collectors.toList());
+
+        while (playersToPair.size() > 0) {
+            if(playersToPair.size() >= 2) {
+                PlayerDTO player1 = playersToPair.get(0), player2 = playersToPair.get(1);
+                firstRoundGames.add(GameDTO.create(chessBoardNo, player1, player2));
+                playersToPair.remove(player1);
+                playersToPair.remove(player2);
+            }
+            //One player in list remaining
+            else{
+                break; //TODO
+            }
+
+            ++chessBoardNo;
+        }
+
+        return RoundDTO.builder().games(firstRoundGames).build();
     }
 
     private RoundDTO getSwissPairings() {
@@ -81,27 +105,33 @@ public class PairingService {
 
     private RoundDTO getRoundRobinPairings() {
         buildPlayersPairingHistory();
-        List<PlayerDTO> playersToPair = new ArrayList<>();
+        List<PlayerDTO> playersToPair = new LinkedList<>();
         Set<GameDTO> newRoundGames = new HashSet<>();
         Collections.copy(playersToPair, TournamentService.currentTournament.getPlayerList());
 
         int chessBoardNo = 1;
         while (playersToPair.size() > 0) {
-            int playerListIndex = 0;
-            PlayerDTO player1 = playersToPair.get(playerListIndex), player2;
+            if(playersToPair.size() >=2) {
+                int playerListIndex = 0;
+                PlayerDTO player1 = playersToPair.get(playerListIndex), player2;
 
-            //Looking for an opponent for player 1
-            do {
-                player2 = playersToPair.get(++playerListIndex);
+                //Looking for an opponent for player 1
+                do {
+                    player2 = playersToPair.get(++playerListIndex);
+                }
+                while (!playedTogether(player1, player2));
+
+                newRoundGames.add(GameDTO.create(chessBoardNo, player1, player2));
+                playersToPair.remove(player1);
+                playersToPair.remove(player2);
             }
-            while(!playedTogether(player1, player2));
+            //One player in list remaining
+            else {
+                break; //TODO
+            }
 
-            newRoundGames.add(GameDTO.create(chessBoardNo, player1, player2));
-            playersToPair.remove(player1);
-            playersToPair.remove(player2);
             chessBoardNo++;
         }
-        //TODO create Round and Games
         return RoundDTO.builder().games(newRoundGames).build();
     }
 
