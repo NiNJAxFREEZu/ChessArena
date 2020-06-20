@@ -48,4 +48,10 @@ public class PlayerDTO {
                 .title(creatingPlayerForm.getTitle())
                 .build();
     }
+
+    public String getShortName() {
+        return name.substring(0, 1)
+                .concat(". ")
+                .concat(surname);
+    }
 }

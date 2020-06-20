@@ -67,7 +67,7 @@ public class TournamentService {
     }
 
     public void startTournament(CreatingTournamentForm creatingTournamentForm, List<PlayerDTO> players) {
-        currentTournament = Tournament.create(creatingTournamentForm);
+        currentTournament = Tournament.create(creatingTournamentForm, players);
         currentRound = pairingService.getPlayerPairing(players);
         currentTournament.getRounds().add(currentRound);
         previousRound = null;
@@ -102,7 +102,15 @@ public class TournamentService {
      */
     @SneakyThrows
     public void openFromFile(String filePath) {
-        Path path = Paths.get(filePath);
+        String resolvedFilePath = System.getProperty("user.home") + "/Desktop";
+
+        if (!filePath.contains("/")) {
+            resolvedFilePath = filePath;
+        } else {
+            resolvedFilePath = resolvedFilePath.concat("/").concat(filePath);
+        }
+
+        Path path = Paths.get(resolvedFilePath);
 
         if (!Files.exists(path)) throw new RuntimeException("Such file doesn't exist!");
 

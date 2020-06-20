@@ -13,6 +13,8 @@ import sample.Models.DAOs.GameDAO;
 public class GameDTO {
     private String playerWhiteID;
     private String playerBlackID;
+    private String playerWhiteShortName;
+    private String playerBlackShortName;
     private Integer chessboardNo;
     @Builder.Default
     private Score score = Score.NotFinished;

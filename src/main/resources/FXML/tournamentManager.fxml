@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+<VBox xmlns:fx="http://javafx.com/fxml/1" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity"
+      minWidth="-Infinity"
+      prefHeight="720.0" prefWidth="1280.0" xmlns="http://javafx.com/javafx/11.0.1"
+      fx:controller="sample.GUI.TournamentManagerController" fx:id="tournamentManagerVBox">
+   <AnchorPane maxHeight="720.0" minHeight="720.0" prefHeight="720.0" prefWidth="1280.0">
+      <AnchorPane maxWidth="300.0" minWidth="255.0" prefHeight="724.0" prefWidth="255.0">
+         <Button fx:id="startTournamentBtn" layoutX="74.0" layoutY="100.0" mnemonicParsing="false"
+                 text="Start tournament"/>
+         <Button fx:id="nextRoundBtn" layoutX="74.0" layoutY="160.0" mnemonicParsing="false" prefHeight="25.0"
+                 prefWidth="107.0" text="Next round"/>
+         <Button fx:id="saveTournamentBtn" onAction="#saveTournament" layoutX="74.0" layoutY="220.0"
+                 mnemonicParsing="false"
+                 text="Save tournament"/>
+         <Separator layoutX="251.0" orientation="VERTICAL" prefHeight="720.0" prefWidth="9.0"/>
+         <Button fx:id="exitBtn" onAction="#exit" layoutX="74.0" layoutY="280.0" mnemonicParsing="false"
+                 prefHeight="25.0"
+                 prefWidth="107.0" text="Exit"/>
+         <Label layoutX="84.0" layoutY="14.0" text="Manage">
+            <font>
+               <Font size="24.0"/>
+            </font>
+         </Label>
+         <Separator layoutY="56.0" prefWidth="255.0"/>
+      </AnchorPane>
+      <AnchorPane layoutX="257.0" prefHeight="724.0" prefWidth="1024.0">
+         <TableView fx:id="roundTable" layoutX="-2.0" layoutY="57.0" prefHeight="662.0" prefWidth="1024.0">
+            <columns>
+               <TableColumn fx:id="whitePlayerCol" editable="false" prefWidth="200.0" sortable="false"
+                            text="White player"/>
+               <TableColumn fx:id="blackPlayerCol" editable="false" prefWidth="200.0" sortable="false"
+                            text="Black player"/>
+               <TableColumn fx:id="chessboardNoCol" editable="false" prefWidth="100.0" sortable="false"
+                            text="Chessboard"/>
+               <TableColumn fx:id="scoreCol" prefWidth="147.0" sortable="false" text="Score"/>
+            </columns>
+         </TableView>
+         <Label layoutX="14.0" layoutY="14.0" text="Round">
+            <font>
+               <Font size="24.0"/>
+            </font>
+         </Label>
+         <Separator layoutY="56.0" prefWidth="1024.0"/>
+         <Label fx:id="roundNoLabel" layoutX="104.0" layoutY="14.0" prefHeight="35.0" prefWidth="117.0"
+                text="RoundNo">
+            <font>
+               <Font size="24.0"/>
+            </font>
+         </Label>
+      </AnchorPane>
+   </AnchorPane>
+</VBox>

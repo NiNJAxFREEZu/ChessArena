@@ -2,7 +2,9 @@ package sample.GUI;
 
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
+import javafx.scene.control.ButtonType;
 import javafx.scene.control.ToolBar;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.VBox;
@@ -24,9 +26,13 @@ public class SplashScreenController {
     @FXML
     public VBox mainBackground;
     @FXML
+    public VBox tournamentManagerVBox;
+    @FXML
     private TournamentCreatorController tournamentCreatorController;
     @FXML
     private CreatePlayerController createPlayerController;
+    @FXML
+    private TournamentManagerController tournamentManagerController;
 
     @FXML
     public Button newTournamentButton;
@@ -35,13 +41,16 @@ public class SplashScreenController {
 
     @FXML
     public void exit(ActionEvent actionEvent) {
-        Stage stage = (Stage) closeButton.getScene().getWindow();
-        stage.close();
+        if (showAreYouSureToExitDialog()) {
+            Stage stage = (Stage) closeButton.getScene().getWindow();
+            stage.close();
+        }
     }
 
     @FXML
     public void openFile(ActionEvent actionEvent) {
-        //TODO open file
+        tournamentManagerController.openFromFile();
+        openTournamentManager();
     }
 
     @FXML
@@ -49,7 +58,6 @@ public class SplashScreenController {
         borderPane.setVisible(false);
         toolbar.setVisible(false);
         tournamentCreatorVBox.setVisible(true);
-
     }
 
     public void openPlayerCreator() {
@@ -72,6 +80,30 @@ public class SplashScreenController {
         mainBackground.setPrefWidth(tournamentCreatorVBox.getPrefWidth());
         tournamentCreatorVBox.setVisible(true);
         createPlayerPopup.setVisible(false);
+    }
+
+    public void openTournamentManager() {
+        tournamentManagerVBox.setVisible(true);
+        tournamentCreatorVBox.setVisible(false);
+        createPlayerPopup.setVisible(false);
+        borderPane.setVisible(false);
+        toolbar.setVisible(false);
+        tournamentManagerController.open();
+    }
+
+    public void closeTournamentManager() {
+        tournamentManagerVBox.setVisible(false);
+        borderPane.setVisible(true);
+        toolbar.setVisible(true);
+    }
+
+    private boolean showAreYouSureToExitDialog() {
+        Alert alert = new Alert(
+                Alert.AlertType.CONFIRMATION,
+                "Are you sure you want to exit?",
+                ButtonType.YES, ButtonType.NO);
+        alert.showAndWait();
+        return alert.getResult() == ButtonType.YES;
     }
 }
 

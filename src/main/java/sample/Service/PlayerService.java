@@ -37,4 +37,12 @@ public class PlayerService {
 
         return FXCollections.observableList(collect);
     }
+
+    public PlayerDTO findPlayerByID(String playerID) {
+        return PlayerDTO.map(
+                playersRepository
+                        .findById(playerID)
+                        .orElseThrow(RuntimeException::new)
+        );
+    }
 }

@@ -9,6 +9,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.VBox;
@@ -197,12 +198,28 @@ public class TournamentCreatorController implements Initializable {
     }
 
     public void finish(ActionEvent actionEvent) {
-
+        finish();
     }
 
     public void finish(KeyEvent keyEvent) {
-        //for now it only assigns stuff to variables (same as "save" but without writing to file)
-        //TODO -> go to tournament watching, scores etc
+        if (keyEvent.getCode() == KeyCode.ENTER) {
+            finish();
+        }
+    }
+
+    private void finish() {
+        if (showAreYouSureToContinueDialog()) {
+            CreatingTournamentForm creatingTournamentForm = CreatingTournamentForm.builder()
+                    .name(tournamentName)
+                    .date(System.currentTimeMillis())
+                    .tournamentType(selectedTournamentType)
+                    .amountOfRounds(selectedAmountOfRounds)
+                    .build();
+            List<PlayerDTO> players = entrantsTable.getItems();
+
+            tournamentService.createTournament(creatingTournamentForm, players);
+            splashScreenController.openTournamentManager();
+        }
     }
 
     private void setNoOfRoundsTextBoxNumericOnly() {
@@ -243,5 +260,14 @@ public class TournamentCreatorController implements Initializable {
         textInputDialog.setTitle("File name");
         textInputDialog.setHeaderText("Please enter desired file name");
         return textInputDialog.showAndWait().orElse(null);
+    }
+
+    private boolean showAreYouSureToContinueDialog() {
+        Alert alert = new Alert(
+                Alert.AlertType.CONFIRMATION,
+                "Are you sure you want to finish creating tournament?",
+                ButtonType.YES, ButtonType.NO);
+        alert.showAndWait();
+        return alert.getResult() == ButtonType.YES;
     }
 }

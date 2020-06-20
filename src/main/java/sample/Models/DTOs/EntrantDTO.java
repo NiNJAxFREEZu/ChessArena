@@ -10,6 +10,7 @@ import sample.Models.DAOs.PlayerDAO;
 @Builder
 @NoArgsConstructor
 public class EntrantDTO {
+    private String playerID;
     private String name;
     private String surname;
     private String licenseID;
@@ -20,6 +21,7 @@ public class EntrantDTO {
 
     public static EntrantDTO map(PlayerDTO player) {
         return EntrantDTO.builder()
+                .playerID(player.getPlayerID())
                 .name(player.getName())
                 .surname(player.getSurname())
                 .licenseID(player.getLicenseID())
@@ -32,6 +34,7 @@ public class EntrantDTO {
 
     public static EntrantDTO map(PlayerDAO player) {
         return EntrantDTO.builder()
+                .playerID(player.get_id().toString())
                 .name(player.getName())
                 .surname(player.getSurname())
                 .licenseID(player.getLicenseID())
