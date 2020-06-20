@@ -68,14 +68,14 @@ public class TournamentService {
 
     public void startTournament(CreatingTournamentForm creatingTournamentForm, List<PlayerDTO> players) {
         currentTournament = Tournament.create(creatingTournamentForm, players);
-        currentRound = pairingService.getPlayerPairing(players);
+        currentRound = pairingService.getPlayerPairings(players);
         currentTournament.getRounds().add(currentRound);
         previousRound = null;
     }
 
     public void nextRound() {
         previousRound = currentRound;
-        currentRound = pairingService.getPlayerPairing(previousRound);
+        currentRound = pairingService.getPlayerPairings();
         currentTournament.getRounds().add(currentRound);
     }
 

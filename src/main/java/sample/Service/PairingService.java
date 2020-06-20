@@ -14,7 +14,7 @@ public class PairingService {
     @Autowired
     private PlayerService playerService;
 
-    RoundDTO getPlayerPairing(List<PlayerDTO> players) {
+    RoundDTO getPlayerPairings(List<PlayerDTO> players) {
         GameDTO game1 = GameDTO.builder()
                 .chessboardNo(1)
                 .playerBlackID("playerBlackID1")
@@ -40,8 +40,13 @@ public class PairingService {
                 .build();
     }
 
-    RoundDTO getPlayerPairing(RoundDTO previousRound) {
+    RoundDTO getPlayerPairings() {
         return null;
+    }
+
+    boolean playedTogether(PlayerDTO player1, PlayerDTO player2) {
+        //TODO
+        return false;
     }
 
 }
