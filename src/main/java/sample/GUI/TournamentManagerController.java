@@ -1,13 +1,15 @@
 package sample.GUI;
 
+import javafx.beans.binding.Bindings;
+import javafx.beans.property.SimpleStringProperty;
+import javafx.beans.property.StringProperty;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.Node;
 import javafx.scene.control.*;
-import javafx.scene.control.cell.ComboBoxTableCell;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.VBox;
-import javafx.util.StringConverter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import sample.Enums.Score;
@@ -37,7 +39,7 @@ public class TournamentManagerController implements Initializable {
     @FXML
     public TableColumn<GameDTO, Integer> chessboardNoCol;
     @FXML
-    public TableColumn<GameDTO, Score> scoreCol;
+    public TableColumn<GameDTO, StringProperty> scoreCol;
     @FXML
     public Label roundNoLabel;
     @FXML
@@ -58,7 +60,10 @@ public class TournamentManagerController implements Initializable {
     }
 
     public void open() {
+        ObservableList<GameDTO> currentRound = TournamentService.getCurrentGamesList();
+        roundTable.setItems(currentRound);
 
+        roundNoLabel.setText(String.valueOf(TournamentService.getCurrentRoundNo()));
     }
 
     public void openFromFile() {
@@ -95,18 +100,26 @@ public class TournamentManagerController implements Initializable {
         whitePlayerCol.setCellValueFactory(new PropertyValueFactory<>("playerWhiteShortName"));
         blackPlayerCol.setCellValueFactory(new PropertyValueFactory<>("playerBlackShortName"));
         chessboardNoCol.setCellValueFactory(new PropertyValueFactory<>("chessboardNo"));
-        scoreCol.setCellFactory(ComboBoxTableCell.forTableColumn(new StringConverter<Score>() {
 
-            @Override
-            public String toString(Score score) {
-                return score.getStringValue();
-            }
+        scoreCol.setCellValueFactory(i -> {
+            final StringProperty value = new SimpleStringProperty(i.getValue().getScore().getStringValue());
+            return Bindings.createObjectBinding(() -> value);
+        });
 
-            @Override
-            public Score fromString(String string) {
-                return Score.resolveFromStringValue(string);
-            }
-        }, Score.values()));
+        scoreCol.setCellFactory(col -> {
+            TableCell<GameDTO, StringProperty> c = new TableCell<>();
+            final ComboBox<String> comboBox = new ComboBox<>(Score.getValues());
+            c.itemProperty().addListener((observable, oldValue, newValue) -> {
+                if (oldValue != null) {
+                    comboBox.valueProperty().unbindBidirectional(oldValue);
+                }
+                if (newValue != null) {
+                    comboBox.valueProperty().bindBidirectional(newValue);
+                }
+            });
+            c.graphicProperty().bind(Bindings.when(c.emptyProperty()).then((Node) null).otherwise(comboBox));
+            return c;
+        });
     }
 
     private boolean showAreYouSureToExitDialog() {
