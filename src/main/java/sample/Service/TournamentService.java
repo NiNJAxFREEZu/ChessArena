@@ -17,7 +17,6 @@ import java.nio.file.Paths;
 import java.time.LocalDate;
 import java.util.*;
 import java.util.function.Supplier;
-import java.util.stream.Collectors;
 
 @Service
 public class TournamentService {
@@ -31,13 +30,7 @@ public class TournamentService {
     private static RoundDTO previousRound;
 
     public static ObservableList<GameDTO> getCurrentGamesList() {
-        RoundDTO round = getPlayerPairing(currentTournament.getPlayerList());
-
-        if (currentRound == null) {
-            return FXCollections.observableList(new ArrayList<>(round.getGames()));
-        } else {
-            return FXCollections.observableList(new ArrayList<>(currentRound.getGames()));
-        }
+        return FXCollections.observableList(new ArrayList<>(currentRound.getGames()));
     }
 
     public static RoundDTO getCurrentRound() {
@@ -45,54 +38,57 @@ public class TournamentService {
     }
 
     public static Integer getCurrentRoundNo() {
-        if (currentRound == null) return 0;
-        else return currentRound.getNr();
+        return currentTournament.getRoundNo();
     }
 
-    public void setScores(Score score, Integer chessboardNo) {
-        GameDTO gameDTO = currentRound.getGames()
-                .stream()
-                .filter((e) -> e.getChessboardNo().equals(chessboardNo))
-                .findFirst()
-                .get();
-        gameDTO.setScore(score);
+    public void setScores() {
+        Set<GameDTO> gamesPlayed = currentTournament
+                .getRounds()
+                .get(getCurrentRoundNo() - 1)
+                .getGames();
 
-        switch (score) {
-            case Draw:
-                addNPointsToUserById(0.5f, gameDTO.getPlayerBlackID());
-                addNPointsToUserById(0.5f, gameDTO.getPlayerWhiteID());
-                break;
-            case BlackWon:
-                addNPointsToUserById(1f, gameDTO.getPlayerBlackID());
-                break;
-            case WhiteWon:
-                addNPointsToUserById(1f, gameDTO.getPlayerWhiteID());
-                break;
+        for (GameDTO gameDTO : gamesPlayed) {
+            Score score = gameDTO.getScore();
+            switch (score) {
+                case Draw:
+                    addNPointsToUserById(0.5f, gameDTO.getPlayerBlackID());
+                    addNPointsToUserById(0.5f, gameDTO.getPlayerWhiteID());
+                    break;
+                case BlackWon:
+                    addNPointsToUserById(1f, gameDTO.getPlayerBlackID());
+                    break;
+                case WhiteWon:
+                    addNPointsToUserById(1f, gameDTO.getPlayerWhiteID());
+                    break;
+            }
         }
     }
 
     private void addNPointsToUserById(Float points, String id) {
-        List<PlayerDTO> updatedPlayerList = currentTournament
+        currentTournament
                 .getPlayerList()
                 .stream()
                 .filter((e) -> e.getPlayerID().equals(id))
-                .peek((e) -> e.setScore(e.getScore() + points))
-                .collect(Collectors.toList());
-
-        currentTournament.setPlayerList(updatedPlayerList);
+                .peek((e) -> e.setScore(e.getScore() + points));
     }
 
-    public void startTournament(CreatingTournamentForm creatingTournamentForm, List<PlayerDTO> players) {
-        currentTournament = Tournament.create(creatingTournamentForm, players);
-        currentRound = pairingService.getPlayerPairings(players);
-        currentTournament.getRounds().add(currentRound);
+    public void startTournament() {
+        currentTournament.incrementRound();
+        currentRound = pairingService.getPlayerPairings();
+        currentTournament.addRound(currentRound);
         previousRound = null;
     }
 
-    public void nextRound() {
+    public void nextRound(List<GameDTO> modifiedGamesList) {
         previousRound = currentRound;
+        currentTournament
+                .getRounds()
+                .get(getCurrentRoundNo() - 1)
+                .setGames(new HashSet<>(modifiedGamesList));
+        setScores();
+        currentTournament.incrementRound();
         currentRound = pairingService.getPlayerPairings();
-        currentTournament.getRounds().add(currentRound);
+        currentTournament.addRound(currentRound);
     }
 
     private void updateRatings() {
@@ -103,6 +99,7 @@ public class TournamentService {
         Tournament tournament = Tournament.create(creatingTournamentForm);
         tournament.setPlayerList(players);
         currentTournament = tournament;
+        currentRound = new RoundDTO();
     }
 
     /**

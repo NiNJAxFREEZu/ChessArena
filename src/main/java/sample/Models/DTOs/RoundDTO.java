@@ -3,6 +3,7 @@ package sample.Models.DTOs;
 import lombok.*;
 import sample.Models.DAOs.RoundDAO;
 
+import java.util.HashSet;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -13,8 +14,10 @@ import java.util.stream.Collectors;
 @Builder
 @NoArgsConstructor
 public class RoundDTO {
-    private Set<GameDTO> games;
-    private Integer nr;
+    @Builder.Default
+    private Set<GameDTO> games = new HashSet<>();
+    @Builder.Default
+    private Integer nr = 0;
 
     public static RoundDTO map(RoundDAO roundDAO) {
         return RoundDTO.builder()

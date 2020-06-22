@@ -1,27 +1,23 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
-<VBox xmlns:fx="http://javafx.com/fxml/1" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity"
-      minWidth="-Infinity"
-      prefHeight="720.0" prefWidth="1280.0" xmlns="http://javafx.com/javafx/11.0.1"
-      fx:controller="sample.GUI.TournamentManagerController" fx:id="tournamentManagerVBox">
+<VBox xmlns:fx="http://javafx.com/fxml/1" fx:id="tournamentManagerVBox" maxHeight="-Infinity" maxWidth="-Infinity"
+      minHeight="-Infinity" minWidth="-Infinity" prefHeight="720.0" prefWidth="1280.0"
+      xmlns="http://javafx.com/javafx/11.0.1" fx:controller="sample.GUI.TournamentManagerController">
    <AnchorPane maxHeight="720.0" minHeight="720.0" prefHeight="720.0" prefWidth="1280.0">
       <AnchorPane maxWidth="300.0" minWidth="255.0" prefHeight="724.0" prefWidth="255.0">
          <Button fx:id="startTournamentBtn" layoutX="74.0" layoutY="100.0" mnemonicParsing="false"
-                 text="Start tournament"/>
-         <Button fx:id="nextRoundBtn" layoutX="74.0" layoutY="160.0" mnemonicParsing="false" prefHeight="25.0"
-                 prefWidth="107.0" text="Next round"/>
-         <Button fx:id="saveTournamentBtn" onAction="#saveTournament" layoutX="74.0" layoutY="220.0"
-                 mnemonicParsing="false"
-                 text="Save tournament"/>
+                 onAction="#startTournament" text="Start tournament"/>
+         <Button fx:id="nextRoundBtn" layoutX="74.0" layoutY="160.0" mnemonicParsing="false" onAction="#nextRound"
+                 prefHeight="25.0" prefWidth="107.0" text="Next round"/>
+         <Button fx:id="saveTournamentBtn" layoutX="74.0" layoutY="220.0" mnemonicParsing="false"
+                 onAction="#saveTournament" text="Save tournament"/>
          <Separator layoutX="251.0" orientation="VERTICAL" prefHeight="720.0" prefWidth="9.0"/>
-         <Button fx:id="exitBtn" onAction="#exit" layoutX="74.0" layoutY="280.0" mnemonicParsing="false"
-                 prefHeight="25.0"
-                 prefWidth="107.0" text="Exit"/>
+         <Button fx:id="exitBtn" layoutX="74.0" layoutY="280.0" mnemonicParsing="false" onAction="#exit"
+                 prefHeight="25.0" prefWidth="107.0" text="Exit"/>
          <Label layoutX="84.0" layoutY="14.0" text="Manage">
             <font>
                <Font size="24.0"/>
@@ -47,8 +43,7 @@
             </font>
          </Label>
          <Separator layoutY="56.0" prefWidth="1024.0"/>
-         <Label fx:id="roundNoLabel" layoutX="104.0" layoutY="14.0" prefHeight="35.0" prefWidth="117.0"
-                text="RoundNo">
+         <Label fx:id="roundNoLabel" layoutX="104.0" layoutY="14.0" prefHeight="35.0" prefWidth="117.0" text="RoundNo">
             <font>
                <Font size="24.0"/>
             </font>

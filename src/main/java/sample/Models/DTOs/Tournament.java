@@ -7,6 +7,7 @@ import sample.Models.DAOs.TournamentDAO;
 import java.time.Instant;
 import java.util.Collections;
 import java.util.Date;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -20,8 +21,10 @@ import java.util.stream.Collectors;
 public class Tournament implements TournamentInProgress {
     private String name;
     private List<PlayerDTO> playerList;
-    private List<RoundDTO> rounds;
-    private Integer roundNo;
+    @Builder.Default
+    private List<RoundDTO> rounds = new LinkedList<>();
+    @Builder.Default
+    private Integer roundNo = 0;
     private Integer numberOfRounds;
     private TournamentType tournamentType;
     private Date date;
@@ -64,5 +67,13 @@ public class Tournament implements TournamentInProgress {
                 .playerList(playerList)
                 .numberOfRounds(creatingTournamentForm.getAmountOfRounds())
                 .build();
+    }
+
+    public void incrementRound() {
+        this.roundNo += 1;
+    }
+
+    public void addRound(RoundDTO round) {
+        this.rounds.add(round);
     }
 }

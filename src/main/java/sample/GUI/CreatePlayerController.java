@@ -112,10 +112,10 @@ public class CreatePlayerController implements Initializable {
         nameCol.setCellValueFactory(new PropertyValueFactory<>("name"));
         surnameCol.setCellValueFactory(new PropertyValueFactory<>("surname"));
         licenseCol.setCellValueFactory(new PropertyValueFactory<>("licenseID"));
-        ratingCol.setCellValueFactory(new PropertyValueFactory<>("title"));
-        genderCol.setCellValueFactory(new PropertyValueFactory<>("rating"));
-        clubCol.setCellValueFactory(new PropertyValueFactory<>("gender"));
-        titleCol.setCellValueFactory(new PropertyValueFactory<>("club"));
+        ratingCol.setCellValueFactory(new PropertyValueFactory<>("rating"));
+        genderCol.setCellValueFactory(new PropertyValueFactory<>("gender"));
+        clubCol.setCellValueFactory(new PropertyValueFactory<>("club"));
+        titleCol.setCellValueFactory(new PropertyValueFactory<>("title"));
     }
 
     private void initDoubleClick() {

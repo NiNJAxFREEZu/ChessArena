@@ -95,10 +95,7 @@ public class TournamentCreatorController implements Initializable {
 
     @FXML
     public void loadComboBox() {
-        TournamentType[] types = TournamentType.values();
-        for (Enum<TournamentType> type : types) {
-            tournamentTypeComboBox.getItems().addAll(type.toString());
-        }
+        tournamentTypeComboBox.setItems(TournamentType.getValues());
         tournamentTypeComboBox.setOnAction(new EventHandler<ActionEvent>() {
             @SneakyThrows
             @Override
@@ -161,23 +158,6 @@ public class TournamentCreatorController implements Initializable {
         if (uWant2SaveDialog.getResult() == ButtonType.YES) {
             tournamentService.saveToFile(null, null, this::showFileExistsAlert);
         }
-    }
-
-    private void showSavingConfirmationDialog() {
-        uWant2SaveDialog = new Alert(
-                Alert.AlertType.CONFIRMATION,
-                String.format("Do you want to save %s?", tournamentName),
-                ButtonType.YES, ButtonType.NO);
-        uWant2SaveDialog.showAndWait();
-    }
-
-    public boolean showFileExistsAlert() {
-        Alert alert = new Alert(
-                Alert.AlertType.WARNING,
-                "Such file already exists in given path, override?",
-                ButtonType.YES, ButtonType.NO);
-        alert.showAndWait();
-        return alert.getResult() == ButtonType.YES;
     }
 
     public void saveSpecial(ActionEvent actionEvent) {
@@ -253,10 +233,27 @@ public class TournamentCreatorController implements Initializable {
         nameCol.setCellValueFactory(new PropertyValueFactory<>("name"));
         surnameCol.setCellValueFactory(new PropertyValueFactory<>("surname"));
         licenseCol.setCellValueFactory(new PropertyValueFactory<>("licenseID"));
-        ratingCol.setCellValueFactory(new PropertyValueFactory<>("title"));
-        genderCol.setCellValueFactory(new PropertyValueFactory<>("rating"));
-        clubCol.setCellValueFactory(new PropertyValueFactory<>("gender"));
-        titleCol.setCellValueFactory(new PropertyValueFactory<>("club"));
+        ratingCol.setCellValueFactory(new PropertyValueFactory<>("rating"));
+        genderCol.setCellValueFactory(new PropertyValueFactory<>("gender"));
+        clubCol.setCellValueFactory(new PropertyValueFactory<>("club"));
+        titleCol.setCellValueFactory(new PropertyValueFactory<>("title"));
+    }
+
+    private void showSavingConfirmationDialog() {
+        uWant2SaveDialog = new Alert(
+                Alert.AlertType.CONFIRMATION,
+                String.format("Do you want to save %s?", tournamentName),
+                ButtonType.YES, ButtonType.NO);
+        uWant2SaveDialog.showAndWait();
+    }
+
+    public boolean showFileExistsAlert() {
+        Alert alert = new Alert(
+                Alert.AlertType.WARNING,
+                "Such file already exists in given path, override?",
+                ButtonType.YES, ButtonType.NO);
+        alert.showAndWait();
+        return alert.getResult() == ButtonType.YES;
     }
 
     private String showFileNameDialog() {

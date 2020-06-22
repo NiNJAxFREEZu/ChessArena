@@ -48,7 +48,7 @@ public class PairingService {
     */
     RoundDTO getPlayerPairings() {
         //First round
-        if(TournamentService.currentTournament.getRoundNo() == 1)
+        if (TournamentService.currentTournament.getRoundNo() == 1)
             return getFirstRoundPairings();
 
         else {
@@ -72,8 +72,7 @@ public class PairingService {
     }
 
     private RoundDTO getFirstRoundPairings() {
-        List<PlayerDTO> playersToPair = new LinkedList<>();
-        Collections.copy(playersToPair, TournamentService.currentTournament.getPlayerList());
+        List<PlayerDTO> playersToPair = new LinkedList<PlayerDTO>(TournamentService.currentTournament.getPlayerList());
         Set<GameDTO> firstRoundGames = new HashSet<>();
         int chessBoardNo = 1;
 
@@ -82,21 +81,29 @@ public class PairingService {
                 .collect(Collectors.toList());
 
         while (playersToPair.size() > 0) {
-            if(playersToPair.size() >= 2) {
-                PlayerDTO player1 = playersToPair.get(0), player2 = playersToPair.get(1);
-                firstRoundGames.add(GameDTO.create(chessBoardNo, player1, player2));
+            if (playersToPair.size() >= 2) {
+                PlayerDTO player1 = playersToPair.get(0);
+                PlayerDTO player2 = playersToPair.get(1);
+
+                firstRoundGames.add(
+                        GameDTO.create(chessBoardNo, player1, player2)
+                );
+
                 playersToPair.remove(player1);
                 playersToPair.remove(player2);
             }
             //One player in list remaining
-            else{
+            else {
                 break; //TODO
             }
 
             ++chessBoardNo;
         }
 
-        return RoundDTO.builder().games(firstRoundGames).build();
+        return RoundDTO.builder()
+                .nr(1)
+                .games(firstRoundGames)
+                .build();
     }
 
     private RoundDTO getSwissPairings() {
@@ -105,13 +112,12 @@ public class PairingService {
 
     private RoundDTO getRoundRobinPairings() {
         buildPlayersPairingHistory();
-        List<PlayerDTO> playersToPair = new LinkedList<>();
+        List<PlayerDTO> playersToPair = new LinkedList<>(TournamentService.currentTournament.getPlayerList());
         Set<GameDTO> newRoundGames = new HashSet<>();
-        Collections.copy(playersToPair, TournamentService.currentTournament.getPlayerList());
 
         int chessBoardNo = 1;
         while (playersToPair.size() > 0) {
-            if(playersToPair.size() >=2) {
+            if (playersToPair.size() >= 2) {
                 int playerListIndex = 0;
                 PlayerDTO player1 = playersToPair.get(playerListIndex), player2;
 
@@ -132,7 +138,11 @@ public class PairingService {
 
             chessBoardNo++;
         }
-        return RoundDTO.builder().games(newRoundGames).build();
+
+        return RoundDTO.builder()
+                .nr(TournamentService.getCurrentRoundNo())
+                .games(newRoundGames)
+                .build();
     }
 
 
@@ -140,13 +150,13 @@ public class PairingService {
         HashMap<String, HashSet<String>> pairingHistory = new HashMap<>();
 
         //Adding players to hashmap
-        for(PlayerDTO player : TournamentService.currentTournament.getPlayerList()) {
+        for (PlayerDTO player : TournamentService.currentTournament.getPlayerList()) {
             pairingHistory.put(player.getPlayerID(), new HashSet<>());
         }
 
         //Building hashsets
         for (RoundDTO round : TournamentService.currentTournament.getRounds()) {
-            for(GameDTO game : round.getGames()) {
+            for (GameDTO game : round.getGames()) {
                 pairingHistory.get(game.getPlayerWhiteID()).add(game.getPlayerBlackID());
                 pairingHistory.get(game.getPlayerBlackID()).add(game.getPlayerWhiteID());
             }
@@ -155,8 +165,8 @@ public class PairingService {
     }
 
     private boolean playedTogether(PlayerDTO player1, PlayerDTO player2) {
-        for(String player2ID : pairingHistory.get(player1.getPlayerID())) {
-            if(player2.getPlayerID().equals(player2ID))
+        for (String player2ID : pairingHistory.get(player1.getPlayerID())) {
+            if (player2.getPlayerID().equals(player2ID))
                 return true;
         }
         return false;
