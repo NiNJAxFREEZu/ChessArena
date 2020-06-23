@@ -165,11 +165,8 @@ public class PairingService {
     }
 
     private boolean playedTogether(PlayerDTO player1, PlayerDTO player2) {
-        for (String player2ID : pairingHistory.get(player1.getPlayerID())) {
-            if (player2.getPlayerID().equals(player2ID))
-                return true;
-        }
-        return false;
+        return pairingHistory.get(player1.getPlayerID()).contains(player2.getPlayerID())
+                || pairingHistory.get(player2.getPlayerID()).contains(player1.getPlayerID());
     }
 
 }
