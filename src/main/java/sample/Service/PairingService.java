@@ -211,9 +211,60 @@ public class PairingService {
                 .build();
     }
 
-    //TBD
+    //Testing!
     private RoundDTO getDoubleRoundRobinPairings() {
-        return null;
+        buildPlayersPairingHistory();
+        List<PlayerDTO> playersToPair = new LinkedList<>(TournamentService.currentTournament.getPlayerList());
+        Set<GameDTO> newRoundGames = new HashSet<>();
+
+        playersToPair = playersToPair.stream()
+                .sorted(Comparator.comparing(PlayerDTO::getScore))
+                .collect(Collectors.toList());
+
+        int chessBoardNo = 1;
+        while (playersToPair.size() > 0) {
+            int playerListIndex = 0;
+            PlayerDTO player1 = playersToPair.get(playerListIndex), player2;
+
+            if (playersToPair.size() >= 2) {
+                try {
+                //Looking for an opponent for player 1 - First cycle
+                    if(TournamentService.getCurrentRoundNo() < TournamentService.currentTournament.getPlayerList().size()) {
+                        do {
+                            player2 = playersToPair.get(++playerListIndex);
+                        }
+                        while (playedTogether(player1, player2));
+                    }
+                    //Looking for an opponent for player 2 - Second cycle
+                    else {
+                        do {
+                            player2 = playersToPair.get(++playerListIndex);
+                        }
+                        while (playedTogetherTwice(player1, player2));
+                    }
+                }
+                //Unable to pair players -> end of tournament
+                catch (IndexOutOfBoundsException e) {
+                    throw new HaveToEndTournamentException();
+                }
+
+                newRoundGames.add(GameDTO.create(chessBoardNo, player1, player2));
+                playersToPair.remove(player1);
+                playersToPair.remove(player2);
+            }
+            //One player in list remaining
+            else {
+                //One remaining player will pause this round and will receive a point (White won)
+                newRoundGames.add(GameDTO.create(player1, Score.WhiteWon));
+                playersToPair.remove(player1);
+            }
+            chessBoardNo++;
+        }
+
+        return RoundDTO.builder()
+                .nr(TournamentService.getCurrentRoundNo())
+                .games(newRoundGames)
+                .build();
     }
 
     //Testing!
@@ -264,6 +315,12 @@ public class PairingService {
 
     //Done!
     private boolean playedTogether(PlayerDTO player1, PlayerDTO player2) {
+        return pairingHistory.get(player1.getPlayerID()).contains(player2.getPlayerID())
+                || pairingHistory.get(player2.getPlayerID()).contains(player1.getPlayerID());
+    }
+
+    //TODO
+    private boolean playedTogetherTwice(PlayerDTO player1, PlayerDTO player2) {
         return pairingHistory.get(player1.getPlayerID()).contains(player2.getPlayerID())
                 || pairingHistory.get(player2.getPlayerID()).contains(player1.getPlayerID());
     }
