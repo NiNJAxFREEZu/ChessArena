@@ -112,8 +112,13 @@ public class PairingService {
                 .build();
     }
 
-    //Testing!
+    //Done!
     private RoundDTO getSwissPairings() {
+
+        //checking if the set amount of rounds has been played already
+        if(TournamentService.getCurrentRoundNo() >= TournamentService.currentTournament.getNumberOfRounds())
+            throw new HaveToEndTournamentException();
+
         buildPlayersPairingHistory();
         List<PlayerDTO> playersToPair = new LinkedList<>(TournamentService.currentTournament.getPlayerList());
         Set<GameDTO> newRoundGames = new HashSet<>();
