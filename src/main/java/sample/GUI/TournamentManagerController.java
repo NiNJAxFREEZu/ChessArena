@@ -24,6 +24,7 @@ import java.net.URL;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.ResourceBundle;
+import java.util.stream.Collectors;
 
 @Controller
 public class TournamentManagerController implements Initializable {
@@ -78,6 +79,14 @@ public class TournamentManagerController implements Initializable {
     }
 
     public void nextRound(ActionEvent actionEvent) {
+        if (modifiedGamesList.stream().anyMatch(e -> e.getScore() == Score.NotFinished)) {
+            showYouCannotEndRoundNoScoreInserted(
+                    modifiedGamesList.stream()
+                            .filter(e -> e.getScore() == Score.NotFinished)
+                            .map(GameDTO::getChessboardNo)
+                            .collect(Collectors.toList()));
+            return;
+        }
         tournamentService.nextRound(modifiedGamesList);
         refreshTable();
         updateRoundLabel();
@@ -183,6 +192,20 @@ public class TournamentManagerController implements Initializable {
                 ButtonType.YES, ButtonType.NO);
         alert.showAndWait();
         return alert.getResult() == ButtonType.YES;
+    }
+
+    private boolean showYouCannotEndRoundNoScoreInserted(List<Integer> chessboardsWithNoScore) {
+        Alert alert = new Alert(
+                Alert.AlertType.ERROR,
+                String.format("You cannot end round!\n" +
+                                "Chessboards%s have no score set!",
+                        chessboardsWithNoScore.stream()
+                                .map(String::valueOf)
+                                .collect(Collectors.joining(", nr ", " (nr ", ")"))),
+                ButtonType.OK
+        );
+        alert.showAndWait();
+        return alert.getResult() == ButtonType.OK;
     }
 
     private boolean showSaveSaveAsDialog() {
