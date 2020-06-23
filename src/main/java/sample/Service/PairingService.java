@@ -59,10 +59,10 @@ public class PairingService {
                     return getRoundRobinPairings();
 
                 case DoubleRoundRobin:
-                    return null;
+                    return getDoubleRoundRobinPairings();
 
                 case HeadsUp:
-                    return null;
+                    return getHeadsUpPairing();
 
                 case Swiss:
                     return getSwissPairings();
@@ -157,6 +157,10 @@ public class PairingService {
         List<PlayerDTO> playersToPair = new LinkedList<>(TournamentService.currentTournament.getPlayerList());
         Set<GameDTO> newRoundGames = new HashSet<>();
 
+        playersToPair = playersToPair.stream()
+                .sorted(Comparator.comparing(PlayerDTO::getScore))
+                .collect(Collectors.toList());
+
         int chessBoardNo = 1;
         while (playersToPair.size() > 0) {
             int playerListIndex = 0;
@@ -194,7 +198,17 @@ public class PairingService {
                 .build();
     }
 
+    //TBD
+    private RoundDTO getDoubleRoundRobinPairings() {
+        return null;
+    }
 
+    //TBD
+    private RoundDTO getHeadsUpPairing() {
+        return null;
+    }
+
+    //Done!
     private void buildPlayersPairingHistory() {
         HashMap<String, HashSet<String>> pairingHistory = new HashMap<>();
 
@@ -213,6 +227,7 @@ public class PairingService {
         this.pairingHistory = pairingHistory;
     }
 
+    //Done!
     private boolean playedTogether(PlayerDTO player1, PlayerDTO player2) {
         return pairingHistory.get(player1.getPlayerID()).contains(player2.getPlayerID())
                 || pairingHistory.get(player2.getPlayerID()).contains(player1.getPlayerID());
