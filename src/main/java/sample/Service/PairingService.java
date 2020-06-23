@@ -5,6 +5,7 @@ import org.springframework.stereotype.Service;
 import sample.Models.DTOs.GameDTO;
 import sample.Models.DTOs.PlayerDTO;
 import sample.Models.DTOs.RoundDTO;
+import sample.Service.exceptions.HaveToEndTournamentException;
 
 import java.util.*;
 import java.util.stream.Collectors;
@@ -122,10 +123,15 @@ public class PairingService {
                 PlayerDTO player1 = playersToPair.get(playerListIndex), player2;
 
                 //Looking for an opponent for player 1
-                do {
-                    player2 = playersToPair.get(++playerListIndex);
+                try {
+                    do {
+                        player2 = playersToPair.get(++playerListIndex);
+                    }
+                    while (playedTogether(player1, player2));
                 }
-                while (!playedTogether(player1, player2));
+                catch (IndexOutOfBoundsException e) { //Unable to pair players -> end of tournament
+                    throw new HaveToEndTournamentException();
+                }
 
                 newRoundGames.add(GameDTO.create(chessBoardNo, player1, player2));
                 playersToPair.remove(player1);
