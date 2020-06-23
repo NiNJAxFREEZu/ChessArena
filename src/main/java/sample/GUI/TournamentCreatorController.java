@@ -11,7 +11,6 @@ import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
-import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.VBox;
 import lombok.SneakyThrows;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -81,6 +80,7 @@ public class TournamentCreatorController implements Initializable {
     public MenuItem preferencesBtn;
     @FXML
     public Button finishButton;
+    private static boolean removingEntrantMode = false;
 
     @Autowired
     private SplashScreenController splashScreenController;
@@ -92,6 +92,8 @@ public class TournamentCreatorController implements Initializable {
     public Alert uWant2SaveDialog;
     @Autowired
     private TournamentService tournamentService;
+    @FXML
+    public Button removeEntrant;
 
     @FXML
     public void loadComboBox() {
@@ -101,6 +103,16 @@ public class TournamentCreatorController implements Initializable {
             @Override
             public void handle(ActionEvent event) {
                 Thread.sleep(100);
+                if (tournamentTypeComboBox.getValue().equals(TournamentType.RoundRobin.getStringValue())) {
+                    amountOfRoundsText.setDisable(true);
+                    amountOfRoundsText.setText("");
+                } else if (tournamentTypeComboBox.getValue().equals(TournamentType.DoubleRoundRobin.getStringValue())) {
+                    amountOfRoundsText.setDisable(true);
+                    amountOfRoundsText.setText("");
+
+                } else {
+                    amountOfRoundsText.setDisable(false);
+                }
                 selectedTournamentType = TournamentType.resolveFromString(tournamentTypeComboBox.getValue());
             }
         });
@@ -117,11 +129,14 @@ public class TournamentCreatorController implements Initializable {
         setCellValueFactories();
         setNoOfRoundsTextBoxNumericOnly();
         setTournamentNameTextBoxProperty();
+        initRowClick();
     }
 
     @FXML
-    public void openCreatePlayerPopup(MouseEvent actionEvent) {
-        splashScreenController.openPlayerCreator();
+    public void openCreatePlayerPopup() {
+        if (!removingEntrantMode) {
+            splashScreenController.openPlayerCreator();
+        }
     }
 
     @FXML
@@ -131,6 +146,7 @@ public class TournamentCreatorController implements Initializable {
 
     @FXML
     public void nextTab(ActionEvent actionEvent) {
+        openCreatePlayerPopup();
         ObservableList<Tab> tabs = tabPane.getTabs();
         SingleSelectionModel<Tab> selectionModel = tabPane.getSelectionModel();
         selectionModel.select(tabs.get(1));
@@ -143,6 +159,8 @@ public class TournamentCreatorController implements Initializable {
     }
 
     public void saveDefault(ActionEvent actionEvent) {
+        checkIfRoundRobinAndSetAdequateAmountOfRounds();
+
         CreatingTournamentForm creatingTournamentForm = CreatingTournamentForm.builder()
                 .name(tournamentName)
                 .date(System.currentTimeMillis())
@@ -160,7 +178,18 @@ public class TournamentCreatorController implements Initializable {
         }
     }
 
+    private void checkIfRoundRobinAndSetAdequateAmountOfRounds() {
+        if (selectedTournamentType.equals(TournamentType.RoundRobin)) {
+            selectedAmountOfRounds = entrantsTable.getItems().size() - 1;
+        }
+        if (selectedTournamentType.equals(TournamentType.DoubleRoundRobin)) {
+            selectedAmountOfRounds = (entrantsTable.getItems().size() * 2) - 1;
+        }
+    }
+
     public void saveSpecial(ActionEvent actionEvent) {
+        checkIfRoundRobinAndSetAdequateAmountOfRounds();
+
         CreatingTournamentForm creatingTournamentForm = CreatingTournamentForm.builder()
                 .name(tournamentName)
                 .date(System.currentTimeMillis())
@@ -192,7 +221,13 @@ public class TournamentCreatorController implements Initializable {
     }
 
     private void finish() {
+        if (entrantsTable.getItems().size() == 0) {
+            showYouCannotCreateTournamentWithoutPlayersDialog();
+            return;
+        }
         if (showAreYouSureToContinueDialog()) {
+            checkIfRoundRobinAndSetAdequateAmountOfRounds();
+
             CreatingTournamentForm creatingTournamentForm = CreatingTournamentForm.builder()
                     .name(tournamentName)
                     .date(System.currentTimeMillis())
@@ -237,6 +272,44 @@ public class TournamentCreatorController implements Initializable {
         genderCol.setCellValueFactory(new PropertyValueFactory<>("gender"));
         clubCol.setCellValueFactory(new PropertyValueFactory<>("club"));
         titleCol.setCellValueFactory(new PropertyValueFactory<>("title"));
+    }
+
+    public void setRemovingMode(ActionEvent actionEvent) {
+        removingEntrantMode = !removingEntrantMode;
+
+        if (removingEntrantMode) {
+            removeEntrant.setText("Click player to remove");
+        } else {
+            removeEntrant.setText("Remove entrant");
+        }
+    }
+
+    private void initRowClick() {
+        entrantsTable.setRowFactory(tv -> {
+            TableRow<PlayerDTO> row = new TableRow<>();
+            row.setOnMouseClicked(event -> {
+                if (!removingEntrantMode) {
+                    openCreatePlayerPopup();
+                }
+                if ((!row.isEmpty()) && removingEntrantMode) {
+                    PlayerDTO rowData = row.getItem();
+                    entrantsTable.getItems().remove(rowData);
+                    removingEntrantMode = false;
+                    removeEntrant.setText("Remove entrant");
+                }
+            });
+            return row;
+        });
+    }
+
+    private boolean showYouCannotCreateTournamentWithoutPlayersDialog() {
+        Alert alert = new Alert(
+                Alert.AlertType.ERROR,
+                "You cannot create tournament without players!",
+                ButtonType.OK
+        );
+        alert.showAndWait();
+        return alert.getResult() == ButtonType.OK;
     }
 
     private void showSavingConfirmationDialog() {
