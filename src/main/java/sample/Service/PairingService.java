@@ -114,40 +114,48 @@ public class PairingService {
 
     //Testing!
     private RoundDTO getSwissPairings() {
-        List<PlayerDTO> playersToPair = new LinkedList<PlayerDTO>(TournamentService.currentTournament.getPlayerList());
-        Set<GameDTO> nextRoundGames = new HashSet<>();
-        int chessBoardNo = 1;
+        buildPlayersPairingHistory();
+        List<PlayerDTO> playersToPair = new LinkedList<>(TournamentService.currentTournament.getPlayerList());
+        Set<GameDTO> newRoundGames = new HashSet<>();
 
         playersToPair = playersToPair.stream()
                 .sorted(Comparator.comparing(PlayerDTO::getScore))
                 .collect(Collectors.toList());
 
+        int chessBoardNo = 1;
         while (playersToPair.size() > 0) {
-            PlayerDTO player1 = playersToPair.get(0);
+            int playerListIndex = 0;
+            PlayerDTO player1 = playersToPair.get(playerListIndex), player2;
 
             if (playersToPair.size() >= 2) {
-                PlayerDTO player2 = playersToPair.get(1);
 
-                nextRoundGames.add(
-                        GameDTO.create(chessBoardNo, player1, player2)
-                );
-
+                //Looking for an opponent for player 1
+                try {
+                    do {
+                        player2 = playersToPair.get(++playerListIndex);
+                    }
+                    while (playedTogether(player1, player2));
+                }
+                //Unable to pair players -> end of tournament
+                catch (IndexOutOfBoundsException e) {
+                    throw new HaveToEndTournamentException();
+                }
+                newRoundGames.add(GameDTO.create(chessBoardNo, player1, player2));
                 playersToPair.remove(player1);
                 playersToPair.remove(player2);
             }
             //One player in list remaining
             else {
                 //One remaining player will pause this round and will receive a point (White won)
-                nextRoundGames.add(GameDTO.create(player1, Score.WhiteWon));
+                newRoundGames.add(GameDTO.create(player1, Score.WhiteWon));
                 playersToPair.remove(player1);
             }
-
-            ++chessBoardNo;
+            chessBoardNo++;
         }
 
         return RoundDTO.builder()
-                .nr(1)
-                .games(nextRoundGames)
+                .nr(TournamentService.getCurrentRoundNo())
+                .games(newRoundGames)
                 .build();
     }
 
@@ -203,9 +211,31 @@ public class PairingService {
         return null;
     }
 
-    //TBD
+    //Testing!
     private RoundDTO getHeadsUpPairing() {
-        return null;
+        double scoreLimit = TournamentService.currentTournament.getNumberOfRounds() / 2.0;
+
+        for (PlayerDTO player : TournamentService.currentTournament.getPlayerList()) {
+            if(player.getScore() >= scoreLimit)
+                throw new HaveToEndTournamentException();
+        }
+
+        Set<GameDTO> newRoundGame = new HashSet<>();
+        PlayerDTO player1 = TournamentService.currentTournament.getPlayerList().get(0);
+        PlayerDTO player2 = TournamentService.currentTournament.getPlayerList().get(1);
+
+        //Checking which player had white pieces in the last game - player's pieces will alternate in colour each round
+        GameDTO lastGame = TournamentService.getCurrentRound().getGames().iterator().next();
+
+        if(lastGame.getPlayerWhiteID().equals(player1.getPlayerID()))
+            newRoundGame.add(GameDTO.create(1, player2, player1));
+        else
+            newRoundGame.add(GameDTO.create(1, player1, player2));
+
+        return RoundDTO.builder()
+                .nr(TournamentService.getCurrentRoundNo())
+                .games(newRoundGame)
+                .build();
     }
 
     //Done!

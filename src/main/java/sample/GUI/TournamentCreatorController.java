@@ -110,6 +110,14 @@ public class TournamentCreatorController implements Initializable {
                     amountOfRoundsText.setDisable(true);
                     amountOfRoundsText.setText("");
 
+                    /*TODO - heads up
+                    Liczba graczy - 2 TYLKO i wyłącznie
+                    Liczba rund - dowolnie, wtedy zawodnicy grają BEST OF liczba rund
+                    Czyli liczba rund 5 = best of 5 czyli wygrywa ten co zdobędzie 3 punkty i wtedy turniej się skończy,
+                    obsłuzę to w metodzie do parowania
+                    Jak będzie remis (2,5 - 2,5) to i tak trzeba będzie zrobić nowy turniej
+                    */
+
                 } else {
                     amountOfRoundsText.setDisable(false);
                 }
