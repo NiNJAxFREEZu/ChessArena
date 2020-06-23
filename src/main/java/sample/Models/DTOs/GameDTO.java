@@ -28,6 +28,7 @@ public class GameDTO {
                 .build();
     }
 
+    //For creating new games that will be played in a round
     public static GameDTO create(Integer chessboardNo, PlayerDTO... players) {
         return GameDTO.builder()
                 .playerWhiteID(players[0].getPlayerID())
@@ -35,6 +36,14 @@ public class GameDTO {
                 .playerWhiteShortName(players[0].getShortName())
                 .playerBlackShortName(players[1].getShortName())
                 .chessboardNo(chessboardNo)
+                .build();
+    }
+
+    public static GameDTO create(PlayerDTO pausingPlayer, Score pausingScore) {
+        return GameDTO.builder()
+                .playerWhiteID(pausingPlayer.getPlayerID())
+                .playerWhiteShortName(pausingPlayer.getShortName())
+                .score(pausingScore)
                 .build();
     }
 }

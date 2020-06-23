@@ -2,6 +2,7 @@ package sample.Service;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import sample.Enums.Score;
 import sample.Models.DTOs.GameDTO;
 import sample.Models.DTOs.PlayerDTO;
 import sample.Models.DTOs.RoundDTO;
@@ -82,8 +83,9 @@ public class PairingService {
                 .collect(Collectors.toList());
 
         while (playersToPair.size() > 0) {
+            PlayerDTO player1 = playersToPair.get(0);
+
             if (playersToPair.size() >= 2) {
-                PlayerDTO player1 = playersToPair.get(0);
                 PlayerDTO player2 = playersToPair.get(1);
 
                 firstRoundGames.add(
@@ -95,7 +97,9 @@ public class PairingService {
             }
             //One player in list remaining
             else {
-                break; //TODO
+                //One remaining player will pause this round and will receive a point (White won)
+                firstRoundGames.add(GameDTO.create(player1, Score.WhiteWon));
+                playersToPair.remove(player1);
             }
 
             ++chessBoardNo;
@@ -118,9 +122,10 @@ public class PairingService {
 
         int chessBoardNo = 1;
         while (playersToPair.size() > 0) {
+            int playerListIndex = 0;
+            PlayerDTO player1 = playersToPair.get(playerListIndex), player2;
+
             if (playersToPair.size() >= 2) {
-                int playerListIndex = 0;
-                PlayerDTO player1 = playersToPair.get(playerListIndex), player2;
 
                 //Looking for an opponent for player 1
                 try {
@@ -129,19 +134,20 @@ public class PairingService {
                     }
                     while (playedTogether(player1, player2));
                 }
-                catch (IndexOutOfBoundsException e) { //Unable to pair players -> end of tournament
+                //Unable to pair players -> end of tournament
+                catch (IndexOutOfBoundsException e) {
                     throw new HaveToEndTournamentException();
                 }
-
                 newRoundGames.add(GameDTO.create(chessBoardNo, player1, player2));
                 playersToPair.remove(player1);
                 playersToPair.remove(player2);
             }
             //One player in list remaining
             else {
-                break; //TODO
+                //One remaining player will pause this round and will receive a point (White won)
+                newRoundGames.add(GameDTO.create(player1, Score.WhiteWon));
+                playersToPair.remove(player1);
             }
-
             chessBoardNo++;
         }
 
