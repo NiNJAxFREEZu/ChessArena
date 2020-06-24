@@ -92,7 +92,6 @@ public class TournamentService {
     }
 
     private void updateRatings() {
-
     }
 
     public void createTournament(CreatingTournamentForm creatingTournamentForm, List<PlayerDTO> players) {
