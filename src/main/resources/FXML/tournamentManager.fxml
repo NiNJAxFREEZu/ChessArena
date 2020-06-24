@@ -48,6 +48,8 @@
                <Font size="24.0"/>
             </font>
          </Label>
+         <Button fx:id="showLeaderboardBtn" layoutX="422.0" layoutY="19.0" mnemonicParsing="false"
+                 onAction="#showLeaderBoard" prefHeight="25.0" prefWidth="176.0" text="Show leaderboard"/>
       </AnchorPane>
    </AnchorPane>
 </VBox>

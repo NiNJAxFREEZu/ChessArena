@@ -14,6 +14,7 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.VBox;
 import lombok.SneakyThrows;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.util.Pair;
 import org.springframework.stereotype.Controller;
 import sample.Enums.Score;
 import sample.Models.DTOs.GameDTO;
@@ -52,9 +53,12 @@ public class TournamentManagerController implements Initializable {
     public VBox tournamentManagerVBox;
     @FXML
     public Alert uWant2SaveDialog;
+    @FXML
+    public Button showLeaderboardBtn;
 
     ObservableList<GameDTO> currentGamesList;
     List<GameDTO> modifiedGamesList;
+    Pair<String, Boolean> tournamentAndIfFinishedWasClickedForIt;
 
     @Autowired
     private SplashScreenController splashScreenController;
@@ -68,14 +72,37 @@ public class TournamentManagerController implements Initializable {
         setCellValueFactories();
         nextRoundBtn.setDisable(true);
         startTournamentBtn.setDisable(false);
+        tournamentAndIfFinishedWasClickedForIt = Pair.of("Not yet set", false);
     }
 
     public void startTournament(ActionEvent actionEvent) {
+        if (startTournamentBtn.getText().equals("Finish tournament")) {
+            if (modifiedGamesList.stream().anyMatch(e -> e.getScore() == Score.NotFinished)) {
+                showYouCannotEndRoundNoScoreInserted(
+                        modifiedGamesList.stream()
+                                .filter(e -> e.getScore() == Score.NotFinished)
+                                .map(GameDTO::getChessboardNo)
+                                .collect(Collectors.toList()));
+                return;
+            }
+            finishTournament();
+            startTournamentBtn.setDisable(true);
+            return;
+        }
+
         tournamentService.startTournament();
         startTournamentBtn.setDisable(true);
         nextRoundBtn.setDisable(false);
         refreshTable();
         updateRoundLabel();
+    }
+
+    private void finishTournament() {
+        if (!tournamentAndIfFinishedWasClickedForIt.getFirst().equals(TournamentService.currentTournament.getName())) {
+            tournamentService.finishTournament(modifiedGamesList);
+            tournamentAndIfFinishedWasClickedForIt = Pair.of(TournamentService.currentTournament.getName(), true);
+        }
+        splashScreenController.openScoreboard(TournamentService.currentTournament.getPlayerList());
     }
 
     public void nextRound(ActionEvent actionEvent) {
@@ -87,9 +114,16 @@ public class TournamentManagerController implements Initializable {
                             .collect(Collectors.toList()));
             return;
         }
+
         tournamentService.nextRound(modifiedGamesList);
         refreshTable();
         updateRoundLabel();
+
+        if (Integer.parseInt(roundNoLabel.getText()) >= TournamentService.currentTournament.getNumberOfRounds()) {
+            startTournamentBtn.setText("Finish tournament");
+            startTournamentBtn.setDisable(false);
+            nextRoundBtn.setDisable(true);
+        }
     }
 
     public void saveTournament() {
@@ -124,9 +158,38 @@ public class TournamentManagerController implements Initializable {
     public void open() {
         refreshTable();
         updateRoundLabel();
+
+        if (Integer.parseInt(roundNoLabel.getText()) >= TournamentService.currentTournament.getNumberOfRounds()) {
+            if (tournamentAndIfFinishedWasClickedForIt.getFirst().equals(TournamentService.currentTournament.getName())) {
+                startTournamentBtn.setText("Finish tournament");
+                startTournamentBtn.setDisable(true);
+                nextRoundBtn.setText("Next Round");
+                nextRoundBtn.setDisable(true);
+            } else {
+                startTournamentBtn.setText("Finish tournament");
+                startTournamentBtn.setDisable(false);
+                nextRoundBtn.setText("Next Round");
+                nextRoundBtn.setDisable(true);
+            }
+        } else if (Integer.parseInt(roundNoLabel.getText()) == 0) {
+            startTournamentBtn.setText("Start tournament");
+            startTournamentBtn.setDisable(false);
+            nextRoundBtn.setText("Next Round");
+            nextRoundBtn.setDisable(true);
+        } else if (Integer.parseInt(roundNoLabel.getText()) < TournamentService.currentTournament.getNumberOfRounds()) {
+            startTournamentBtn.setText("Start tournament");
+            startTournamentBtn.setDisable(true);
+            nextRoundBtn.setText("Next Round");
+            nextRoundBtn.setDisable(false);
+        }
     }
 
     public void openFromFile() {
+        startTournamentBtn.setText("Start tournament");
+        startTournamentBtn.setDisable(false);
+        nextRoundBtn.setText("Next Round");
+        nextRoundBtn.setDisable(true);
+
         String fileNameOrPath = showOpeningFileNameDialog();
         tournamentService.openFromFile(fileNameOrPath);
     }
@@ -197,7 +260,7 @@ public class TournamentManagerController implements Initializable {
     private boolean showYouCannotEndRoundNoScoreInserted(List<Integer> chessboardsWithNoScore) {
         Alert alert = new Alert(
                 Alert.AlertType.ERROR,
-                String.format("You cannot end round!\n" +
+                String.format("You cannot proceed!\n" +
                                 "Chessboards%s have no score set!",
                         chessboardsWithNoScore.stream()
                                 .map(String::valueOf)
@@ -236,11 +299,15 @@ public class TournamentManagerController implements Initializable {
         return alert.getResult() == ButtonType.YES;
     }
 
-
     private String showSavingFileNameDialog() {
         TextInputDialog textInputDialog = new TextInputDialog("Tournament");
         textInputDialog.setTitle("File name");
         textInputDialog.setHeaderText("Please enter desired file name");
         return textInputDialog.showAndWait().orElse(null);
+    }
+
+    @FXML
+    public void showLeaderBoard(ActionEvent actionEvent) {
+        splashScreenController.openScoreboard(TournamentService.currentTournament.getPlayerList());
     }
 }

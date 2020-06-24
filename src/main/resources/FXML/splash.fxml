@@ -21,6 +21,12 @@
                         <fx:include source="tournamentManager.fxml"/>
                     </children>
                 </VBox>
+                <VBox fx:id="scoreboard" alignment="CENTER" visible="false" AnchorPane.bottomAnchor="0.0"
+                      AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                    <children>
+                        <fx:include source="score.fxml"/>
+                    </children>
+                </VBox>
                 <VBox fx:id="createPlayerPopup" alignment="TOP_CENTER" visible="false" AnchorPane.bottomAnchor="0.0"
                       AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                     <children>

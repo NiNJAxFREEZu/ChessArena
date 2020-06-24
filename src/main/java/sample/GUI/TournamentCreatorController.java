@@ -81,6 +81,7 @@ public class TournamentCreatorController implements Initializable {
     @FXML
     public Button finishButton;
     private static boolean removingEntrantMode = false;
+    private static boolean moreThanTwoPlayersPossible = true;
 
     @Autowired
     private SplashScreenController splashScreenController;
@@ -103,21 +104,15 @@ public class TournamentCreatorController implements Initializable {
             @Override
             public void handle(ActionEvent event) {
                 Thread.sleep(100);
+                moreThanTwoPlayersPossible = true;
                 if (tournamentTypeComboBox.getValue().equals(TournamentType.RoundRobin.getStringValue())) {
                     amountOfRoundsText.setDisable(true);
                     amountOfRoundsText.setText("");
                 } else if (tournamentTypeComboBox.getValue().equals(TournamentType.DoubleRoundRobin.getStringValue())) {
                     amountOfRoundsText.setDisable(true);
                     amountOfRoundsText.setText("");
-
-                    /*TODO - heads up
-                    Liczba graczy - 2 TYLKO i wyłącznie
-                    Liczba rund - dowolnie, wtedy zawodnicy grają BEST OF liczba rund
-                    Czyli liczba rund 5 = best of 5 czyli wygrywa ten co zdobędzie 3 punkty i wtedy turniej się skończy,
-                    obsłuzę to w metodzie do parowania
-                    Jak będzie remis (2,5 - 2,5) to i tak trzeba będzie zrobić nowy turniej
-                    */
-
+                } else if (tournamentTypeComboBox.getValue().equals(TournamentType.HeadsUp.getStringValue())) {
+                    moreThanTwoPlayersPossible = false;
                 } else {
                     amountOfRoundsText.setDisable(false);
                 }
@@ -167,6 +162,8 @@ public class TournamentCreatorController implements Initializable {
     }
 
     public void saveDefault(ActionEvent actionEvent) {
+        if (assertThatPlayersListIsOfGoodSize()) return;
+
         checkIfRoundRobinAndSetAdequateAmountOfRounds();
 
         CreatingTournamentForm creatingTournamentForm = CreatingTournamentForm.builder()
@@ -196,6 +193,8 @@ public class TournamentCreatorController implements Initializable {
     }
 
     public void saveSpecial(ActionEvent actionEvent) {
+        if (assertThatPlayersListIsOfGoodSize()) return;
+
         checkIfRoundRobinAndSetAdequateAmountOfRounds();
 
         CreatingTournamentForm creatingTournamentForm = CreatingTournamentForm.builder()
@@ -229,10 +228,8 @@ public class TournamentCreatorController implements Initializable {
     }
 
     private void finish() {
-        if (entrantsTable.getItems().size() == 0) {
-            showYouCannotCreateTournamentWithoutPlayersDialog();
-            return;
-        }
+        if (assertThatPlayersListIsOfGoodSize()) return;
+
         if (showAreYouSureToContinueDialog()) {
             checkIfRoundRobinAndSetAdequateAmountOfRounds();
 
@@ -247,6 +244,18 @@ public class TournamentCreatorController implements Initializable {
             tournamentService.createTournament(creatingTournamentForm, players);
             splashScreenController.openTournamentManager();
         }
+    }
+
+    private boolean assertThatPlayersListIsOfGoodSize() {
+        if (entrantsTable.getItems().size() <= 1) {
+            showYouCannotCreateTournamentWithoutPlayersDialog();
+            return true;
+        }
+        if (!moreThanTwoPlayersPossible && entrantsTable.getItems().size() > 2) {
+            showYouCannotCreateTournamentMoreThanTwoPlayersDialog();
+            return true;
+        }
+        return false;
     }
 
     private void setNoOfRoundsTextBoxNumericOnly() {
@@ -313,7 +322,25 @@ public class TournamentCreatorController implements Initializable {
     private boolean showYouCannotCreateTournamentWithoutPlayersDialog() {
         Alert alert = new Alert(
                 Alert.AlertType.ERROR,
-                "You cannot create tournament without players!",
+                String.format("You cannot create tournament with %s!",
+                        (entrantsTable.getItems().size() == 0)
+                                ? "no players"
+                                : "one player"
+                ),
+                ButtonType.OK
+        );
+        alert.showAndWait();
+        return alert.getResult() == ButtonType.OK;
+    }
+
+    private boolean showYouCannotCreateTournamentMoreThanTwoPlayersDialog() {
+        Alert alert = new Alert(
+                Alert.AlertType.ERROR,
+                String.format("You cannot create 'Heads up' tournament with more than 2 players!\n" +
+                        "Remove %s", ((entrantsTable.getItems().size() - 2) == 1)
+                        ? "one player"
+                        : (entrantsTable.getItems().size() - 2) + " players"
+                ),
                 ButtonType.OK
         );
         alert.showAndWait();

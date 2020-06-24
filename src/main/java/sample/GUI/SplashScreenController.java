@@ -11,8 +11,10 @@ import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import sample.Models.DTOs.PlayerDTO;
 
 import java.io.IOException;
+import java.util.List;
 
 @Controller
 public class SplashScreenController {
@@ -29,12 +31,18 @@ public class SplashScreenController {
     @FXML
     public VBox tournamentManagerVBox;
     @FXML
+    public VBox scoreboard;
+    @FXML
     private TournamentCreatorController tournamentCreatorController;
     @FXML
     private CreatePlayerController createPlayerController;
     @FXML
+
     @Autowired
     private TournamentManagerController tournamentManagerController;
+
+    @Autowired
+    private ScoreboardController scoreboardController;
 
     @FXML
     public Button newTournamentButton;
@@ -67,6 +75,7 @@ public class SplashScreenController {
         mainBackground.setPrefHeight(createPlayerPopup.getPrefHeight());
         tournamentCreatorVBox.setVisible(false);
         createPlayerPopup.setVisible(true);
+        scoreboard.setVisible(false);
     }
 
     public void closeTournamentCreator() {
@@ -90,8 +99,20 @@ public class SplashScreenController {
         createPlayerPopup.setVisible(false);
         borderPane.setVisible(false);
         toolbar.setVisible(false);
-
+        scoreboard.setVisible(false);
         tournamentManagerController.open();
+    }
+
+
+    public void openScoreboard(List<PlayerDTO> playerDTOS) {
+        scoreboard.setVisible(true);
+        tournamentManagerVBox.setVisible(false);
+        tournamentCreatorVBox.setVisible(false);
+        createPlayerPopup.setVisible(false);
+        borderPane.setVisible(false);
+        toolbar.setVisible(false);
+
+        scoreboardController.displayResults(playerDTOS);
     }
 
     public void closeTournamentManager() {
@@ -107,6 +128,10 @@ public class SplashScreenController {
                 ButtonType.YES, ButtonType.NO);
         alert.showAndWait();
         return alert.getResult() == ButtonType.YES;
+    }
+
+    public void closeScoreBoard() {
+        openTournamentManager();
     }
 }
 

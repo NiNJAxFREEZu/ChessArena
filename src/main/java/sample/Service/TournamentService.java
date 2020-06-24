@@ -66,12 +66,22 @@ public class TournamentService {
         }
     }
 
-    private void addNPointsToUserById(Float points, String id) {
+    public void finishTournament(List<GameDTO> modifiedGamesList) {
         currentTournament
-                .getPlayerList()
-                .stream()
-                .filter((e) -> e.getPlayerID().equals(id))
-                .peek((e) -> e.setScore(e.getScore() + points));
+                .getRounds()
+                .get(getCurrentRoundNo() - 1)
+                .setGames(new HashSet<>(modifiedGamesList));
+        setScores();
+    }
+
+    private void addNPointsToUserById(Float points, String id) {
+        List<PlayerDTO> playerList = currentTournament.getPlayerList();
+        for (PlayerDTO playerDTO : playerList) {
+            if (playerDTO.getPlayerID().equals(id)) {
+                Float score = playerDTO.getScore();
+                playerDTO.setScore(score + points);
+            }
+        }
     }
 
     public void startTournament() {
@@ -100,6 +110,10 @@ public class TournamentService {
     }
 
     public void createTournament(CreatingTournamentForm creatingTournamentForm, List<PlayerDTO> players) {
+        if (Objects.isNull(creatingTournamentForm.getName())) {
+            creatingTournamentForm.setName("Tournament");
+        }
+
         Tournament tournament = Tournament.create(creatingTournamentForm);
         tournament.setPlayerList(players);
         currentTournament = tournament;
