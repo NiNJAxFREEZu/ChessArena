@@ -10,7 +10,7 @@ public class RankingService {
     @Autowired
     private PlayerService playerService;
 
-    public void updatePlayerRatings(GameDTO game) {
+    void updatePlayerRatings(GameDTO game) {
         PlayerDTO whitePlayer = playerService.findPlayerByID(game.getPlayerWhiteID());
         PlayerDTO blackPlayer = playerService.findPlayerByID(game.getPlayerBlackID());
         double pWhite = getPlayerPropability(whitePlayer, blackPlayer), pBlack = getPlayerPropability(blackPlayer, whitePlayer);

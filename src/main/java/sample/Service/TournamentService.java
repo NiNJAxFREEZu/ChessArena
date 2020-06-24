@@ -24,6 +24,8 @@ public class TournamentService {
     private TournamentRepository tournamentRepository;
     @Autowired
     private PairingService pairingService;
+    @Autowired
+    private RankingService rankingService;
 
     public static Tournament currentTournament;
     private static RoundDTO currentRound;
@@ -81,6 +83,12 @@ public class TournamentService {
 
     public void nextRound(List<GameDTO> modifiedGamesList) {
         previousRound = currentRound;
+
+        //Updating player ratings
+        for (GameDTO game: modifiedGamesList) {
+            rankingService.updatePlayerRatings(game);
+        }
+
         currentTournament
                 .getRounds()
                 .get(getCurrentRoundNo() - 1)
@@ -89,9 +97,6 @@ public class TournamentService {
         currentTournament.incrementRound();
         currentRound = pairingService.getPlayerPairings();
         currentTournament.addRound(currentRound);
-    }
-
-    private void updateRatings() {
     }
 
     public void createTournament(CreatingTournamentForm creatingTournamentForm, List<PlayerDTO> players) {
