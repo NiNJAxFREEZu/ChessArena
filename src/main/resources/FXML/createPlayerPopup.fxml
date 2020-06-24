@@ -1,61 +1,51 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.scene.control.*?>
-<?import javafx.scene.layout.AnchorPane?>
-<?import javafx.scene.layout.VBox?>
-<?import javafx.scene.text.Font?>
-<VBox xmlns:fx="http://javafx.com/fxml/1" fx:id="createPlayerPopup" prefHeight="720.0" prefWidth="1280.0"
-      xmlns="http://javafx.com/javafx/11.0.1" fx:controller="sample.GUI.CreatePlayerController">
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+
+<VBox fx:id="createPlayerPopup" prefHeight="720.0" prefWidth="1280.0" xmlns="http://javafx.com/javafx/10.0.2-internal" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sample.GUI.CreatePlayerController">
    <children>
       <AnchorPane maxHeight="720.0" minHeight="720.0" prefHeight="720.0" prefWidth="1280.0">
          <children>
-            <AnchorPane maxHeight="720.0" maxWidth="340.0" minHeight="720.0" minWidth="340.0" prefHeight="720.0"
-                        prefWidth="340.0">
+            <AnchorPane maxHeight="720.0" maxWidth="340.0" minHeight="720.0" minWidth="340.0" prefHeight="720.0" prefWidth="340.0">
                <children>
                   <Label layoutX="110.0" layoutY="14.0" text="New player">
                      <font>
-                        <Font size="24.0"/>
+                        <Font size="24.0" />
                      </font>
                   </Label>
-                  <Separator layoutY="55.0" prefHeight="3.0" prefWidth="340.0"/>
-                  <TextField fx:id="nameText" alignment="CENTER" layoutX="96.0" layoutY="120.0" text="Name"/>
-                  <TextField fx:id="surnameText" alignment="CENTER" layoutX="96.0" layoutY="170.0" text="Surname"/>
-                  <TextField fx:id="licenseIdText" alignment="CENTER" layoutX="96.0" layoutY="220.0" text="License ID"/>
-                  <TextField fx:id="genderField" alignment="CENTER" layoutX="98.0" layoutY="270.0" text="Gender (Sex)"/>
-                  <TextField fx:id="clubText" alignment="CENTER" layoutX="96.0" layoutY="320.0" text="Club"/>
-                  <TextField fx:id="titleText" alignment="CENTER" layoutX="96.0" layoutY="370.0" text="Title"/>
-                  <Button fx:id="cancel" layoutX="8.0" layoutY="469.0" mnemonicParsing="false" onAction="#cancel"
-                          prefHeight="43.0" prefWidth="78.0" text="Close"/>
-                  <Button fx:id="createPlayerBtn" layoutX="254.0" layoutY="469.0" mnemonicParsing="false"
-                          onAction="#createPlayer" prefHeight="43.0" prefWidth="78.0" text="Create"/>
-                  <Label fx:id="failLabel" layoutX="107.0" layoutY="425.0" prefHeight="17.0" prefWidth="130.0"
-                         text="Failed to create player!" textAlignment="CENTER" textFill="RED" visible="false"/>
-                  <Label fx:id="successLabel" layoutX="128.0" layoutY="425.0" prefHeight="17.0" prefWidth="88.0"
-                         text="Created player!" textAlignment="CENTER" textFill="#15ff00" visible="false"/>
+                  <Separator layoutY="55.0" prefHeight="3.0" prefWidth="340.0" />
+                  <TextField fx:id="nameText" alignment="CENTER" layoutX="96.0" layoutY="120.0" text="Name" />
+                  <TextField fx:id="surnameText" alignment="CENTER" layoutX="96.0" layoutY="170.0" text="Surname" />
+                  <TextField fx:id="licenseIdText" alignment="CENTER" layoutX="96.0" layoutY="220.0" text="License ID" />
+                  <TextField fx:id="clubText" alignment="CENTER" layoutX="96.0" layoutY="320.0" text="Club" />
+                  <TextField fx:id="titleText" alignment="CENTER" layoutX="96.0" layoutY="370.0" text="Title" />
+                  <Button fx:id="cancel" layoutX="8.0" layoutY="469.0" mnemonicParsing="false" onAction="#cancel" prefHeight="43.0" prefWidth="78.0" text="Close" />
+                  <Button fx:id="createPlayerBtn" layoutX="254.0" layoutY="469.0" mnemonicParsing="false" onAction="#createPlayer" prefHeight="43.0" prefWidth="78.0" text="Create" />
+                  <Label fx:id="failLabel" layoutX="107.0" layoutY="425.0" prefHeight="17.0" prefWidth="130.0" text="Failed to create player!" textAlignment="CENTER" textFill="RED" visible="false" />
+                  <Label fx:id="successLabel" layoutX="128.0" layoutY="425.0" prefHeight="17.0" prefWidth="88.0" text="Created player!" textAlignment="CENTER" textFill="#15ff00" visible="false" />
+                  <ComboBox layoutX="96.0" layoutY="267.0" nodeOrientation="RIGHT_TO_LEFT" prefWidth="150.0" promptText="Gender" />
                </children>
             </AnchorPane>
-            <Separator layoutX="338.0" layoutY="-1.0" orientation="VERTICAL" prefHeight="720.0" prefWidth="9.0"/>
+            <Separator layoutX="338.0" layoutY="-1.0" orientation="VERTICAL" prefHeight="720.0" prefWidth="9.0" />
             <AnchorPane layoutX="343.0" prefHeight="720.0" prefWidth="940.0">
                <children>
-                  <Separator layoutY="55.0" prefHeight="3.0" prefWidth="940.0"/>
+                  <Separator layoutY="55.0" prefHeight="3.0" prefWidth="940.0" />
                   <TableView fx:id="existingPlayersTable" layoutY="60.0" prefHeight="658.0" prefWidth="940.0">
                      <columns>
-                        <TableColumn fx:id="nameCol" editable="false" sortable="false" prefWidth="131.0" text="Name"/>
-                        <TableColumn fx:id="surnameCol" editable="false" sortable="false" prefWidth="131.0"
-                                     text="Surname"/>
-                        <TableColumn fx:id="licenseCol" editable="false" sortable="false" prefWidth="115.0"
-                                     text="License ID"/>
-                        <TableColumn fx:id="ratingCol" editable="false" sortable="false" prefWidth="63.0"
-                                     text="Rating"/>
-                        <TableColumn fx:id="genderCol" editable="false" sortable="false" prefWidth="84.0"
-                                     text="Gender"/>
-                        <TableColumn fx:id="clubCol" editable="false" sortable="false" prefWidth="129.0" text="Club"/>
-                        <TableColumn fx:id="titleCol" editable="false" sortable="false" prefWidth="286.0" text="Title"/>
+                        <TableColumn fx:id="nameCol" editable="false" prefWidth="131.0" sortable="false" text="Name" />
+                        <TableColumn fx:id="surnameCol" editable="false" prefWidth="131.0" sortable="false" text="Surname" />
+                        <TableColumn fx:id="licenseCol" editable="false" prefWidth="115.0" sortable="false" text="License ID" />
+                        <TableColumn fx:id="ratingCol" editable="false" prefWidth="63.0" sortable="false" text="Rating" />
+                        <TableColumn fx:id="genderCol" editable="false" prefWidth="84.0" sortable="false" text="Gender" />
+                        <TableColumn fx:id="clubCol" editable="false" prefWidth="129.0" sortable="false" text="Club" />
+                        <TableColumn fx:id="titleCol" editable="false" prefWidth="286.0" sortable="false" text="Title" />
                      </columns>
                   </TableView>
                   <Label layoutX="389.0" layoutY="14.0" text="Existing players">
                      <font>
-                        <Font size="24.0"/>
+                        <Font size="24.0" />
                      </font>
                   </Label>
                </children>

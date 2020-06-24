@@ -29,7 +29,7 @@ public class CreatePlayerController implements Initializable {
     @FXML
     public TextField licenseIdText;
     @FXML
-    public TextField genderField;
+    public ComboBox<String> genderField;
     @FXML
     public TextField clubText;
     @FXML
