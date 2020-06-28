@@ -11,6 +11,11 @@ public class RankingService {
     private PlayerService playerService;
 
     void updatePlayerRatings(GameDTO game) {
+
+        //Skipping if a player took a pause
+        if(game.getChessboardNo() == null)
+            return;
+
         PlayerDTO whitePlayer = playerService.findPlayerByID(game.getPlayerWhiteID());
         PlayerDTO blackPlayer = playerService.findPlayerByID(game.getPlayerBlackID());
         double pWhite = getPlayerPropability(whitePlayer, blackPlayer), pBlack = getPlayerPropability(blackPlayer, whitePlayer);

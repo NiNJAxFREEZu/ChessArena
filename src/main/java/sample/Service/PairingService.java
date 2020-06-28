@@ -306,8 +306,13 @@ public class PairingService {
         //Building hashsets
         for (RoundDTO round : TournamentService.currentTournament.getRounds()) {
             for (GameDTO game : round.getGames()) {
-                pairingHistory.get(game.getPlayerWhiteID()).add(game.getPlayerBlackID());
-                pairingHistory.get(game.getPlayerBlackID()).add(game.getPlayerWhiteID());
+                //Skipping paused games
+                if(game.getChessboardNo() == null)
+                    continue;
+                else {
+                    pairingHistory.get(game.getPlayerWhiteID()).add(game.getPlayerBlackID());
+                    pairingHistory.get(game.getPlayerBlackID()).add(game.getPlayerWhiteID());
+                }
             }
         }
         this.pairingHistory = pairingHistory;
