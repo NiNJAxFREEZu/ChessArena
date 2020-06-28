@@ -354,11 +354,4 @@ public class PairingService {
 
         return numCount > 1;
     }
-
-    //TODO
-//    private boolean playedTogetherTwice(PlayerDTO player1, PlayerDTO player2) {
-//        return pairingHistory.get(player1.getPlayerID()).contains(player2.getPlayerID())
-//                && (pairingHistory.get(player1.getPlayerID()).subList(0,pairingHistory.get(player1.getPlayerID()).indexOf(player2.getPlayerID())).contains(player2.getPlayerID())
-//                || pairingHistory.get(player1.getPlayerID()).subList(pairingHistory.get(player1.getPlayerID()).indexOf(player2.getPlayerID()), pairingHistory.get(player1.getPlayerID()).size()).contains(player2.getPlayerID()));
-//    }
 }
