@@ -19,10 +19,11 @@ public class CreatingPlayerForm {
     private String gender;
     private String title;
     private String club;
+    private Integer rating;
     @Builder.Default
     private Float score = 0f;
 
-    public CreatingPlayerForm(String name, String surname, String licenseID, String gender, String club, String title) {
+    public CreatingPlayerForm(String name, String surname, String licenseID, String gender, String club, String title, Integer rating) {
         this.name = name;
         this.surname = surname;
         this.licenseID = licenseID;
@@ -31,5 +32,6 @@ public class CreatingPlayerForm {
         this.gender = gender;
         this.club = club;
         this.title = title;
+        this.rating = rating;
     }
 }

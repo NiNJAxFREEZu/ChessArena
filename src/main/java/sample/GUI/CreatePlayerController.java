@@ -1,5 +1,7 @@
 package sample.GUI;
 
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -36,6 +38,8 @@ public class CreatePlayerController implements Initializable {
     @FXML
     public TextField titleText;
     @FXML
+    public TextField ratingText;
+    @FXML
     public Label failLabel;
     @FXML
     public Label successLabel;
@@ -69,6 +73,12 @@ public class CreatePlayerController implements Initializable {
     public void createPlayer(ActionEvent actionEvent) {
         failLabel.setVisible(false);
         successLabel.setVisible(false);
+        Integer rating = 1000;
+
+        try {
+            rating = Integer.parseInt(ratingText.getText());
+        } catch (Exception ignored) {
+        }
 
         CreatingPlayerForm creatingPlayerForm = new CreatingPlayerForm(
                 nameText.getText(),
@@ -76,7 +86,8 @@ public class CreatePlayerController implements Initializable {
                 licenseIdText.getText(),
                 genderField.getValue(),
                 clubText.getText(),
-                titleText.getText()
+                titleText.getText(),
+                rating
         );
 
         try {
@@ -102,6 +113,25 @@ public class CreatePlayerController implements Initializable {
         initDoubleClick();
         refreshTable();
         initGenderComboBox();
+        setRatingNumericOnly();
+    }
+
+    private void setRatingNumericOnly() {
+        ratingText.textProperty().addListener(new ChangeListener<String>() {
+            @Override
+            public void changed(ObservableValue<? extends String> observable, String oldValue,
+                                String newValue) {
+                if (!newValue.matches("\\d*")) {
+                    ratingText.setText(newValue.replaceAll("[^\\d]", ""));
+                }
+            }
+        });
+
+        ratingText.setOnMouseClicked(e -> {
+            if (ratingText.getText().matches("[A-Za-z]+")) {
+                ratingText.setText("");
+            }
+        });
     }
 
     private void initGenderComboBox() {

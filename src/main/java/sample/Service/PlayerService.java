@@ -34,6 +34,10 @@ public class PlayerService {
         return playersRepository.findAll().stream().map(PlayerDTO::map).collect(Collectors.toList());
     }
 
+    public void updatePlayer(PlayerDTO playerDTO) {
+        playersRepository.save(PlayerDAO.map(playerDTO));
+    }
+
     public ObservableList<PlayerDTO> getAllEntrants() {
         List<PlayerDTO> collect = playersRepository.findAll().stream().map(PlayerDTO::map).collect(Collectors.toList());
 

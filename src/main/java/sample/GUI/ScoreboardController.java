@@ -59,6 +59,7 @@ public class ScoreboardController implements Initializable {
                         .sorted(Comparator.comparing(PlayerDTO::getScore).reversed())
                         .collect(Collectors.toList())
         ));
+        playersTable.sort();
     }
 
     private void setCellValueFactories() {

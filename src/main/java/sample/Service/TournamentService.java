@@ -26,6 +26,8 @@ public class TournamentService {
     private PairingService pairingService;
     @Autowired
     private RankingService rankingService;
+    @Autowired
+    private PlayerService playerService;
 
     public static Tournament currentTournament;
     private static RoundDTO currentRound;
@@ -67,6 +69,13 @@ public class TournamentService {
     }
 
     public void finishTournament(List<GameDTO> modifiedGamesList) {
+        //Updating player ratings
+        for (GameDTO game : modifiedGamesList) {
+            rankingService.updatePlayerRatings(game);
+        }
+
+        updatePlayers();
+
         currentTournament
                 .getRounds()
                 .get(getCurrentRoundNo() - 1)
@@ -95,18 +104,37 @@ public class TournamentService {
         previousRound = currentRound;
 
         //Updating player ratings
-        for (GameDTO game: modifiedGamesList) {
+        for (GameDTO game : modifiedGamesList) {
             rankingService.updatePlayerRatings(game);
         }
+
+        updatePlayers();
 
         currentTournament
                 .getRounds()
                 .get(getCurrentRoundNo() - 1)
                 .setGames(new HashSet<>(modifiedGamesList));
+
         setScores();
-        currentTournament.incrementRound();
+
+
         currentRound = pairingService.getPlayerPairings();
+
+
+        currentTournament.incrementRound();
         currentTournament.addRound(currentRound);
+    }
+
+    private void updatePlayers() {
+        List<PlayerDTO> playerList = currentTournament.getPlayerList();
+        List<PlayerDTO> updatedPlayerList = new ArrayList<>();
+
+        playerList.forEach(playerDTO -> {
+            PlayerDTO playerByID = playerService.findPlayerByID(playerDTO.getPlayerID());
+            updatedPlayerList.add(playerByID);
+        });
+
+        currentTournament.setPlayerList(updatedPlayerList);
     }
 
     public void createTournament(CreatingTournamentForm creatingTournamentForm, List<PlayerDTO> players) {

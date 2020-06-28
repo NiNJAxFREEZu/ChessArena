@@ -20,8 +20,10 @@ import sample.Enums.Score;
 import sample.Models.DTOs.GameDTO;
 import sample.Service.PairingService;
 import sample.Service.TournamentService;
+import sample.Service.exceptions.HaveToEndTournamentException;
 
 import java.net.URL;
+import java.util.Comparator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.ResourceBundle;
@@ -115,7 +117,14 @@ public class TournamentManagerController implements Initializable {
             return;
         }
 
-        tournamentService.nextRound(modifiedGamesList);
+        try {
+            tournamentService.nextRound(modifiedGamesList);
+        } catch (HaveToEndTournamentException ex) {
+            showHaveToEndTournamentAlert();
+            splashScreenController.openScoreboard(TournamentService.currentTournament.getPlayerList());
+            return;
+        }
+
         refreshTable();
         updateRoundLabel();
 
@@ -197,7 +206,8 @@ public class TournamentManagerController implements Initializable {
     private void refreshTable() {
         currentGamesList = TournamentService.getCurrentGamesList();
         modifiedGamesList = new LinkedList<>(currentGamesList);
-        roundTable.setItems(currentGamesList);
+        roundTable.setItems(currentGamesList.sorted(Comparator.comparing(GameDTO::getChessboardNo)));
+        roundTable.sort();
     }
 
     private void setCellValueFactories() {
@@ -304,6 +314,16 @@ public class TournamentManagerController implements Initializable {
         textInputDialog.setTitle("File name");
         textInputDialog.setHeaderText("Please enter desired file name");
         return textInputDialog.showAndWait().orElse(null);
+    }
+
+    private void showHaveToEndTournamentAlert() {
+        Alert alert = new Alert(
+                Alert.AlertType.INFORMATION,
+                "Tournament has ended!",
+                ButtonType.OK
+        );
+
+        alert.showAndWait();
     }
 
     @FXML

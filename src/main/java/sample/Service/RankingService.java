@@ -24,16 +24,19 @@ public class RankingService {
             case WhiteWon: {
                 whitePlayer.setRating(getPlayerEloRating(whitePlayer, pWhite, 1.0));
                 blackPlayer.setRating(getPlayerEloRating(blackPlayer, pBlack, 0));
+                break;
             }
 
             case BlackWon: {
                 whitePlayer.setRating(getPlayerEloRating(whitePlayer, pWhite, 0));
                 blackPlayer.setRating(getPlayerEloRating(blackPlayer, pBlack, 1.0));
+                break;
             }
 
             case Draw: {
                 whitePlayer.setRating(getPlayerEloRating(whitePlayer, pWhite, 0.5));
                 blackPlayer.setRating(getPlayerEloRating(blackPlayer, pBlack, 0.5));
+                break;
             }
 
             case NotFinished: {
@@ -41,11 +44,12 @@ public class RankingService {
             }
 
             default: {
-                return;
+                break;
             }
         }
 
-
+        playerService.updatePlayer(whitePlayer);
+        playerService.updatePlayer(blackPlayer);
     }
 
     private double getPlayerPropability(PlayerDTO player, PlayerDTO opponent) {
