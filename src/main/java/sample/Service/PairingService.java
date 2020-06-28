@@ -339,10 +339,26 @@ public class PairingService {
                 || pairingHistory.get(player2.getPlayerID()).contains(player1.getPlayerID());
     }
 
-    //TODO
     private boolean playedTogetherTwice(PlayerDTO player1, PlayerDTO player2) {
-        return pairingHistory.get(player1.getPlayerID()).contains(player2.getPlayerID())
-                && (pairingHistory.get(player1.getPlayerID()).subList(0,pairingHistory.get(player1.getPlayerID()).indexOf(player2.getPlayerID())).contains(player2.getPlayerID())
-                || pairingHistory.get(player1.getPlayerID()).subList(pairingHistory.get(player1.getPlayerID()).indexOf(player2.getPlayerID()), pairingHistory.get(player1.getPlayerID()).size()).contains(player2.getPlayerID()));
+        return moreThanOnce(pairingHistory.get(player1.getPlayerID()), player2.getPlayerID())
+                || moreThanOnce(pairingHistory.get(player2.getPlayerID()), player1.getPlayerID());
     }
+
+    public static boolean moreThanOnce(List<String> list, String searched)
+    {
+        int numCount = 0;
+
+        for (String text : list) {
+            if (text.equals(searched)) numCount++;
+        }
+
+        return numCount > 1;
+    }
+
+    //TODO
+//    private boolean playedTogetherTwice(PlayerDTO player1, PlayerDTO player2) {
+//        return pairingHistory.get(player1.getPlayerID()).contains(player2.getPlayerID())
+//                && (pairingHistory.get(player1.getPlayerID()).subList(0,pairingHistory.get(player1.getPlayerID()).indexOf(player2.getPlayerID())).contains(player2.getPlayerID())
+//                || pairingHistory.get(player1.getPlayerID()).subList(pairingHistory.get(player1.getPlayerID()).indexOf(player2.getPlayerID()), pairingHistory.get(player1.getPlayerID()).size()).contains(player2.getPlayerID()));
+//    }
 }
