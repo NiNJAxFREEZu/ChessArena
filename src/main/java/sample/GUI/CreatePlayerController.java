@@ -73,7 +73,7 @@ public class CreatePlayerController implements Initializable {
                 nameText.getText(),
                 surnameText.getText(),
                 licenseIdText.getText(),
-                genderField.getText(),
+                genderField.getValue(),
                 clubText.getText(),
                 titleText.getText()
         );

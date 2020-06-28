@@ -269,7 +269,7 @@ public class PairingService {
 
     //Testing!
     private RoundDTO getHeadsUpPairing() {
-        double scoreLimit = TournamentService.currentTournament.getNumberOfRounds() / 2.0;
+        double scoreLimit = TournamentService.currentTournament.getNumberOfRounds() / 2.0 + 0.5;
 
         for (PlayerDTO player : TournamentService.currentTournament.getPlayerList()) {
             if(player.getScore() >= scoreLimit)

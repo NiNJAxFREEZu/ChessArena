@@ -1,25 +1,25 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.geometry.Insets?>
+<?import javafx.geometry.*?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
-<VBox xmlns:fx="http://javafx.com/fxml/1" fx:id="tournamentCreatorVBox" prefHeight="720.0" prefWidth="1280.0"
-      xmlns="http://javafx.com/javafx/11.0.1" fx:controller="sample.GUI.TournamentCreatorController">
+
+<VBox fx:id="tournamentCreatorVBox" prefHeight="720.0" prefWidth="1280.0" xmlns="http://javafx.com/javafx/10.0.2-internal" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sample.GUI.TournamentCreatorController">
     <children>
         <MenuBar fx:id="menuBar" prefHeight="23.0" prefWidth="6043.0" VBox.vgrow="NEVER">
             <menus>
                 <Menu fx:id="menuFile" mnemonicParsing="false" text="File">
                     <items>
-                        <MenuItem fx:id="newTournamentBtn" mnemonicParsing="false" text="New tournament"/>
-                        <MenuItem fx:id="openBtn" mnemonicParsing="false" text="Open..."/>
-                        <Menu fx:id="recentTournaments" mnemonicParsing="false" text="Open recent"/>
-                        <SeparatorMenuItem mnemonicParsing="false"/>
-                        <MenuItem fx:id="saveBtn" mnemonicParsing="false" onAction="#saveDefault" text="Save"/>
-                        <MenuItem fx:id="saveAsBtn" mnemonicParsing="false" onAction="#saveSpecial" text="Save As…"/>
-                        <SeparatorMenuItem mnemonicParsing="false"/>
-                        <MenuItem fx:id="preferencesBtn" mnemonicParsing="false" text="Preferences…"/>
-                        <SeparatorMenuItem mnemonicParsing="false"/>
-                        <MenuItem fx:id="menuFileQuit" mnemonicParsing="false" onAction="#exit" text="Quit"/>
+                        <MenuItem fx:id="newTournamentBtn" mnemonicParsing="false" text="New tournament" />
+                        <MenuItem fx:id="openBtn" mnemonicParsing="false" text="Open..." />
+                        <Menu fx:id="recentTournaments" mnemonicParsing="false" text="Open recent" />
+                        <SeparatorMenuItem mnemonicParsing="false" />
+                        <MenuItem fx:id="saveBtn" mnemonicParsing="false" onAction="#saveDefault" text="Save" />
+                        <MenuItem fx:id="saveAsBtn" mnemonicParsing="false" onAction="#saveSpecial" text="Save As…" />
+                        <SeparatorMenuItem mnemonicParsing="false" />
+                        <MenuItem fx:id="preferencesBtn" mnemonicParsing="false" text="Preferences…" />
+                        <SeparatorMenuItem mnemonicParsing="false" />
+                        <MenuItem fx:id="menuFileQuit" mnemonicParsing="false" onAction="#exit" text="Quit" />
                     </items>
                 </Menu>
                 <Menu mnemonicParsing="false" text="Help">
@@ -37,42 +37,27 @@
                             <children>
                                 <AnchorPane layoutX="24.0" layoutY="110.0" prefHeight="32.0" prefWidth="410.0">
                                     <children>
-                                        <ComboBox fx:id="tournamentTypeComboBox" layoutX="134.0" layoutY="1.0"
-                                                  prefHeight="31.0" prefWidth="271.0"/>
-                                        <Label layoutY="6.0" text="Tournament type"/>
+                                        <ComboBox fx:id="tournamentTypeComboBox" layoutX="134.0" layoutY="1.0" prefHeight="31.0" prefWidth="271.0" />
+                                        <Label layoutY="6.0" text="Tournament type" />
                                     </children>
                                 </AnchorPane>
                                 <AnchorPane layoutX="24.0" layoutY="160.0" prefHeight="49.0" prefWidth="216.0">
                                     <children>
-                                        <Label layoutY="14.0" text="No of rounds"/>
-                                        <TextField fx:id="amountOfRoundsText" layoutX="134.0" layoutY="6.0"
-                                                   prefHeight="31.0" prefWidth="45.0"/>
+                                        <Label layoutY="14.0" text="No of rounds" />
+                                        <TextField fx:id="amountOfRoundsText" layoutX="134.0" layoutY="6.0" prefHeight="31.0" prefWidth="45.0" />
                                     </children>
                                 </AnchorPane>
                                 <AnchorPane layoutX="24.0" layoutY="208.0" prefHeight="71.0" prefWidth="668.0">
                                     <children>
-                                        <Button fx:id="next" layoutX="250.0" layoutY="36.0" mnemonicParsing="false"
-                                                onAction="#nextTab" prefHeight="71.0" prefWidth="214.0"
-                                                text="Select players" AnchorPane.bottomAnchor="0.0"
-                                                AnchorPane.leftAnchor="222.0" AnchorPane.rightAnchor="222.0"
-                                                AnchorPane.topAnchor="0.0"/>
-                                        <Button fx:id="cancelTournamentCreation" layoutY="36.0" maxWidth="222.0"
-                                                minWidth="222.0" mnemonicParsing="false"
-                                                onAction="#closeTournamentCreator" prefHeight="71.0" prefWidth="222.0"
-                                                text="Cancel" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0"
-                                                AnchorPane.rightAnchor="444.0" AnchorPane.topAnchor="0.0"/>
-                                        <Button fx:id="finishButton" layoutX="465.0" layoutY="4.0" maxWidth="334.0"
-                                                minWidth="75.0" mnemonicParsing="false" onAction="#finish"
-                                                prefHeight="71.0" prefWidth="221.0" text="Finish"
-                                                AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="444.0"
-                                                AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0"/>
+                                        <Button fx:id="next" layoutX="250.0" mnemonicParsing="false" onAction="#nextTab" prefHeight="41.0" prefWidth="224.0" text="Add players" AnchorPane.bottomAnchor="30.0" AnchorPane.leftAnchor="222.0" AnchorPane.rightAnchor="222.0" AnchorPane.topAnchor="0.0" />
+                                        <Button fx:id="cancelTournamentCreation" layoutY="36.0" maxWidth="222.0" minWidth="217.0" mnemonicParsing="false" onAction="#closeTournamentCreator" prefHeight="41.0" prefWidth="217.0" text="Cancel" AnchorPane.bottomAnchor="30.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="451.0" AnchorPane.topAnchor="0.0" />
+                                        <Button fx:id="finishButton" layoutX="450.0" maxWidth="334.0" minWidth="75.0" mnemonicParsing="false" onAction="#finish" prefHeight="41.0" prefWidth="218.0" text="Create tournament" AnchorPane.bottomAnchor="30.0" AnchorPane.leftAnchor="450.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
                                     </children>
                                 </AnchorPane>
                                 <AnchorPane layoutX="24.0" layoutY="55.0" prefHeight="27.0" prefWidth="668.0">
                                     <children>
-                                        <TextField fx:id="tournamentNameText" layoutX="134.0" layoutY="1.0"
-                                                   prefHeight="25.0" prefWidth="534.0" text="Tournament"/>
-                                        <Label layoutY="6.0" text="Tournament name"/>
+                                        <TextField fx:id="tournamentNameText" layoutX="134.0" layoutY="1.0" prefHeight="25.0" prefWidth="534.0" text="Tournament" />
+                                        <Label layoutY="6.0" text="Tournament name" />
                                     </children>
                                 </AnchorPane>
                             </children>
@@ -83,29 +68,18 @@
                     <content>
                         <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="654.0" prefWidth="1260.0">
                             <children>
-                                <TableView fx:id="entrantsTable" onKeyPressed="#finishKey" prefHeight="651.0"
-                                           prefWidth="1260.0" AnchorPane.bottomAnchor="-5.0" AnchorPane.leftAnchor="0.0"
-                                           AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                                <TableView fx:id="entrantsTable" onKeyPressed="#finishKey" prefHeight="651.0" prefWidth="1260.0" AnchorPane.bottomAnchor="-5.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                                     <columns>
-                                        <TableColumn fx:id="nameCol" editable="false" prefWidth="96.4000244140625"
-                                                     sortable="false" text="Name"/>
-                                        <TableColumn fx:id="surnameCol" editable="false" prefWidth="120.99996948242188"
-                                                     sortable="false" text="Surname"/>
-                                        <TableColumn fx:id="ratingCol" editable="false" prefWidth="131.5999755859375"
-                                                     sortable="false" text="Ranking"/>
-                                        <TableColumn fx:id="titleCol" editable="false" prefWidth="120.20001220703125"
-                                                     sortable="false" text="Title"/>
-                                        <TableColumn fx:id="genderCol" editable="false" prefWidth="109.0"
-                                                     sortable="false" text="Gender"/>
-                                        <TableColumn fx:id="clubCol" editable="false" prefWidth="120.20001220703125"
-                                                     sortable="false" text="Club"/>
-                                        <TableColumn fx:id="licenseCol" editable="false" prefWidth="120.20001220703125"
-                                                     sortable="false" text="Licence no"/>
+                                        <TableColumn fx:id="nameCol" editable="false" prefWidth="96.4000244140625" sortable="false" text="Name" />
+                                        <TableColumn fx:id="surnameCol" editable="false" prefWidth="120.99996948242188" sortable="false" text="Surname" />
+                                        <TableColumn fx:id="ratingCol" editable="false" prefWidth="131.5999755859375" sortable="false" text="Ranking" />
+                                        <TableColumn fx:id="titleCol" editable="false" prefWidth="120.20001220703125" sortable="false" text="Title" />
+                                        <TableColumn fx:id="genderCol" editable="false" prefWidth="109.0" sortable="false" text="Gender" />
+                                        <TableColumn fx:id="clubCol" editable="false" prefWidth="120.20001220703125" sortable="false" text="Club" />
+                                        <TableColumn fx:id="licenseCol" editable="false" prefWidth="120.20001220703125" sortable="false" text="Licence no" />
                                         <TableColumn prefWidth="272.0">
                                             <graphic>
-                                                <Button fx:id="removeEntrant" mnemonicParsing="false"
-                                                        onAction="#setRemovingMode" prefHeight="25.0" prefWidth="278.0"
-                                                        text="Remove entrant"/>
+                                                <Button fx:id="removeEntrant" mnemonicParsing="false" onAction="#setRemovingMode" prefHeight="25.0" prefWidth="278.0" text="Remove entrant" />
                                             </graphic>
                                         </TableColumn>
                                     </columns>
