@@ -233,6 +233,10 @@ public class TournamentCreatorController implements Initializable {
         if (showAreYouSureToContinueDialog()) {
             checkIfRoundRobinAndSetAdequateAmountOfRounds();
 
+            //Nie wolno tu patrzeć, brzydki kod
+            if (selectedAmountOfRounds == null)
+                selectedAmountOfRounds = Integer.parseInt(amountOfRoundsText.getText());
+
             CreatingTournamentForm creatingTournamentForm = CreatingTournamentForm.builder()
                     .name(tournamentName)
                     .date(System.currentTimeMillis())
