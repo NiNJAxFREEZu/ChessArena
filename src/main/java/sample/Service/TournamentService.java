@@ -194,9 +194,7 @@ public class TournamentService {
         String defaultFolderName;
 
         if (fileName == null) {
-            defaultFileName = currentTournament.getName()
-                    .concat("_")
-                    .concat(LocalDate.now().toString());
+            defaultFileName = currentTournament.getName();
         } else {
             defaultFileName = fileName;
         }

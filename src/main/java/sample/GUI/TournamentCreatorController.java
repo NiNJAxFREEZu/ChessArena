@@ -2,6 +2,7 @@ package sample.GUI;
 
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
+import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -23,6 +24,7 @@ import sample.Service.TournamentService;
 import java.net.URL;
 import java.util.List;
 import java.util.ResourceBundle;
+import java.util.stream.Collectors;
 
 @Controller
 public class TournamentCreatorController implements Initializable {
@@ -98,7 +100,14 @@ public class TournamentCreatorController implements Initializable {
 
     @FXML
     public void loadComboBox() {
-        tournamentTypeComboBox.setItems(TournamentType.getValues());
+        tournamentTypeComboBox.setItems(
+                FXCollections.observableList(
+                        TournamentType.getValues()
+                                .stream()
+                                .filter(e -> !e.equals("Not specified"))
+                                .collect(Collectors.toList())
+                )
+        );
         tournamentTypeComboBox.setOnAction(new EventHandler<ActionEvent>() {
             @SneakyThrows
             @Override
@@ -388,5 +397,9 @@ public class TournamentCreatorController implements Initializable {
                 ButtonType.YES, ButtonType.NO);
         alert.showAndWait();
         return alert.getResult() == ButtonType.YES;
+    }
+
+    public void openBtnAction(ActionEvent actionEvent) {
+        splashScreenController.openFile(actionEvent);
     }
 }

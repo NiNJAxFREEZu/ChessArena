@@ -9,6 +9,7 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.Pane;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import sample.Enums.Genders;
 import sample.Models.DTOs.CreatingPlayerForm;
 import sample.Models.DTOs.PlayerDTO;
 import sample.Service.PlayerService;
@@ -100,6 +101,11 @@ public class CreatePlayerController implements Initializable {
         setCellValueFactories();
         initDoubleClick();
         refreshTable();
+        initGenderComboBox();
+    }
+
+    private void initGenderComboBox() {
+        genderField.setItems(Genders.getGenders());
     }
 
     private void refreshTable() {

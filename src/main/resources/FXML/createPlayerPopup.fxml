@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.scene.control.*?>
-<?import javafx.scene.layout.*?>
-<?import javafx.scene.text.*?>
-
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
 <VBox fx:id="createPlayerPopup" prefHeight="720.0" prefWidth="1280.0" xmlns="http://javafx.com/javafx/10.0.2-internal" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sample.GUI.CreatePlayerController">
    <children>
       <AnchorPane maxHeight="720.0" minHeight="720.0" prefHeight="720.0" prefWidth="1280.0">
@@ -25,7 +25,8 @@
                   <Button fx:id="createPlayerBtn" layoutX="254.0" layoutY="469.0" mnemonicParsing="false" onAction="#createPlayer" prefHeight="43.0" prefWidth="78.0" text="Create" />
                   <Label fx:id="failLabel" layoutX="107.0" layoutY="425.0" prefHeight="17.0" prefWidth="130.0" text="Failed to create player!" textAlignment="CENTER" textFill="RED" visible="false" />
                   <Label fx:id="successLabel" layoutX="128.0" layoutY="425.0" prefHeight="17.0" prefWidth="88.0" text="Created player!" textAlignment="CENTER" textFill="#15ff00" visible="false" />
-                  <ComboBox layoutX="96.0" layoutY="267.0" nodeOrientation="RIGHT_TO_LEFT" prefWidth="150.0" promptText="Gender" />
+                  <ComboBox layoutX="96.0" layoutY="267.0" nodeOrientation="RIGHT_TO_LEFT" prefWidth="150.0"
+                            fx:id="genderField" promptText="Gender"/>
                </children>
             </AnchorPane>
             <Separator layoutX="338.0" layoutY="-1.0" orientation="VERTICAL" prefHeight="720.0" prefWidth="9.0" />
