@@ -141,18 +141,11 @@ public class PairingService {
                     }
                     while (playedTogether(player1, player2));
                 }
-                //Unable to pair players -> end of tournament
+                //Unable to pair anyone to a player -> give him a pause
                 catch (IndexOutOfBoundsException e) {
-                    //If we cannot pair the last player in the list we end the tournament
-                    if(playersToPair.indexOf(player1) == playersToPair.size() - 1)
-                        throw new HaveToEndTournamentException();
-                    //If this was not the last player in the list we give him a round pause
-                    else {
                         newRoundGames.add(GameDTO.create(player1, Score.WhiteWon));
                         playersToPair.remove(player1);
                         continue;
-                    }
-
                 }
                 newRoundGames.add(GameDTO.create(chessBoardNo, player1, player2));
                 playersToPair.remove(player1);
@@ -166,6 +159,18 @@ public class PairingService {
             }
             chessBoardNo++;
         }
+
+        //Checking if we couldn't pair any player
+        boolean haveToEndTournament = true;
+        for (GameDTO game : newRoundGames) {
+            if(game.getChessboardNo() != null) {
+                haveToEndTournament = false;
+                break;
+            }
+        }
+
+        if(haveToEndTournament)
+            throw new HaveToEndTournamentException();
 
         return RoundDTO.builder()
                 .nr(TournamentService.getCurrentRoundNo())
@@ -197,17 +202,12 @@ public class PairingService {
                     }
                     while (playedTogether(player1, player2));
                 }
-                //Unable to pair players -> end of tournament
+                //Unable to pair anyone to a player -> give him a pause
                 catch (IndexOutOfBoundsException e) {
-                    //If we cannot pair the last player in the list we end the tournament
-                    if(playersToPair.indexOf(player1) == playersToPair.size() - 1)
-                        throw new HaveToEndTournamentException();
-                        //If this was not the last player in the list we give him a round pause
-                    else {
-                        newRoundGames.add(GameDTO.create(player1, Score.WhiteWon));
-                        playersToPair.remove(player1);
-                        continue;
-                    }
+                    //If this was not the last player in the list we give him a round pause
+                    newRoundGames.add(GameDTO.create(player1, Score.WhiteWon));
+                    playersToPair.remove(player1);
+                    continue;
                 }
                 newRoundGames.add(GameDTO.create(chessBoardNo, player1, player2));
                 playersToPair.remove(player1);
@@ -260,17 +260,12 @@ public class PairingService {
                         while (playedTogetherTwice(player1, player2));
                     }
                 }
-                //Unable to pair players -> end of tournament
+                //Unable to pair anyone to a player -> give him a pause
                 catch (IndexOutOfBoundsException e) {
-                    //If we cannot pair the last player in the list we end the tournament
-                    if(playersToPair.indexOf(player1) == playersToPair.size() - 1)
-                        throw new HaveToEndTournamentException();
-                        //If this was not the last player in the list we give him a round pause
-                    else {
-                        newRoundGames.add(GameDTO.create(player1, Score.WhiteWon));
-                        playersToPair.remove(player1);
-                        continue;
-                    }
+                    //If this was not the last player in the list we give him a round pause
+                    newRoundGames.add(GameDTO.create(player1, Score.WhiteWon));
+                    playersToPair.remove(player1);
+                    continue;
                 }
 
                 newRoundGames.add(GameDTO.create(chessBoardNo, player1, player2));
