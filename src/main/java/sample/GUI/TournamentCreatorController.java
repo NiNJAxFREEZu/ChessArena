@@ -132,7 +132,7 @@ public class TournamentCreatorController implements Initializable {
 
     @FXML
     public void exit(ActionEvent actionEvent) {
-        splashScreenController.closeTournamentCreator();
+        splashScreenController.exit(actionEvent);
     }
 
     @Override

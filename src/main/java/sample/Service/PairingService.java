@@ -43,11 +43,6 @@ public class PairingService {
                 .build();
     }
 
-    /*
-    VERY importanet methoed - for now let's assume that player count is EVEN
-    RULE 0 -> pair players for first round according to their ratings
-    RULE 1 -> pair players according to their tournament round history (two players cannot play together twice)
-    */
     RoundDTO getPlayerPairings() {
         //First round
         if (TournamentService.currentTournament.getRoundNo() == 1)
@@ -287,7 +282,7 @@ public class PairingService {
                 .build();
     }
 
-    //Testing!
+    //Done!
     private RoundDTO getHeadsUpPairing() {
         double scoreLimit = TournamentService.currentTournament.getNumberOfRounds() / 2.0 + 0.5;
 
@@ -344,10 +339,19 @@ public class PairingService {
                 || pairingHistory.get(player2.getPlayerID()).contains(player1.getPlayerID());
     }
 
-    //TODO
     private boolean playedTogetherTwice(PlayerDTO player1, PlayerDTO player2) {
-        return pairingHistory.get(player1.getPlayerID()).contains(player2.getPlayerID())
-                && (pairingHistory.get(player1.getPlayerID()).subList(0,pairingHistory.get(player1.getPlayerID()).indexOf(player2.getPlayerID())).contains(player2.getPlayerID())
-                || pairingHistory.get(player1.getPlayerID()).subList(pairingHistory.get(player1.getPlayerID()).indexOf(player2.getPlayerID()), pairingHistory.get(player1.getPlayerID()).size()).contains(player2.getPlayerID()));
+        return moreThanOnce(pairingHistory.get(player1.getPlayerID()), player2.getPlayerID())
+                || moreThanOnce(pairingHistory.get(player2.getPlayerID()), player1.getPlayerID());
+    }
+
+    public static boolean moreThanOnce(List<String> list, String searched)
+    {
+        int numCount = 0;
+
+        for (String text : list) {
+            if (text.equals(searched)) numCount++;
+        }
+
+        return numCount > 1;
     }
 }
