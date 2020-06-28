@@ -32,11 +32,11 @@ public class SplashScreenController {
     public VBox tournamentManagerVBox;
     @FXML
     public VBox scoreboard;
+
     @FXML
-    private TournamentCreatorController tournamentCreatorController;
+    public Button openButton;
     @FXML
-    private CreatePlayerController createPlayerController;
-    @FXML
+    public javafx.scene.control.Button closeButton;
 
     @Autowired
     private TournamentManagerController tournamentManagerController;
@@ -46,14 +46,16 @@ public class SplashScreenController {
 
     @FXML
     public Button newTournamentButton;
-    public Button openButton;
-    public javafx.scene.control.Button closeButton;
+    @Autowired
+    private TournamentCreatorController tournamentCreatorController;
+    @Autowired
+    private CreatePlayerController createPlayerController;
 
     @FXML
     public void exit(ActionEvent actionEvent) {
         if (showAreYouSureToExitDialog()) {
-                Platform.exit();
-                System.exit(0);
+            Platform.exit();
+            System.exit(0);
         }
     }
 
@@ -76,6 +78,8 @@ public class SplashScreenController {
         tournamentCreatorVBox.setVisible(false);
         createPlayerPopup.setVisible(true);
         scoreboard.setVisible(false);
+
+        createPlayerController.refreshTable();
     }
 
     public void closeTournamentCreator() {

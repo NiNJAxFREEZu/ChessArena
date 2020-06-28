@@ -138,7 +138,7 @@ public class CreatePlayerController implements Initializable {
         genderField.setItems(Genders.getGenders());
     }
 
-    private void refreshTable() {
+    public void refreshTable() {
         ObservableList<PlayerDTO> allEntrants = playerService.getAllEntrants();
         existingPlayersTable.setItems(allEntrants);
     }
