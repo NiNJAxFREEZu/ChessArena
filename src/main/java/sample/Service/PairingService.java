@@ -143,7 +143,16 @@ public class PairingService {
                 }
                 //Unable to pair players -> end of tournament
                 catch (IndexOutOfBoundsException e) {
-                    throw new HaveToEndTournamentException();
+                    //If we cannot pair the last player in the list we end the tournament
+                    if(playersToPair.indexOf(player1) == playersToPair.size() - 1)
+                        throw new HaveToEndTournamentException();
+                    //If this was not the last player in the list we give him a round pause
+                    else {
+                        newRoundGames.add(GameDTO.create(player1, Score.WhiteWon));
+                        playersToPair.remove(player1);
+                        continue;
+                    }
+
                 }
                 newRoundGames.add(GameDTO.create(chessBoardNo, player1, player2));
                 playersToPair.remove(player1);
@@ -190,7 +199,15 @@ public class PairingService {
                 }
                 //Unable to pair players -> end of tournament
                 catch (IndexOutOfBoundsException e) {
-                    throw new HaveToEndTournamentException();
+                    //If we cannot pair the last player in the list we end the tournament
+                    if(playersToPair.indexOf(player1) == playersToPair.size() - 1)
+                        throw new HaveToEndTournamentException();
+                        //If this was not the last player in the list we give him a round pause
+                    else {
+                        newRoundGames.add(GameDTO.create(player1, Score.WhiteWon));
+                        playersToPair.remove(player1);
+                        continue;
+                    }
                 }
                 newRoundGames.add(GameDTO.create(chessBoardNo, player1, player2));
                 playersToPair.remove(player1);
@@ -245,7 +262,15 @@ public class PairingService {
                 }
                 //Unable to pair players -> end of tournament
                 catch (IndexOutOfBoundsException e) {
-                    throw new HaveToEndTournamentException();
+                    //If we cannot pair the last player in the list we end the tournament
+                    if(playersToPair.indexOf(player1) == playersToPair.size() - 1)
+                        throw new HaveToEndTournamentException();
+                        //If this was not the last player in the list we give him a round pause
+                    else {
+                        newRoundGames.add(GameDTO.create(player1, Score.WhiteWon));
+                        playersToPair.remove(player1);
+                        continue;
+                    }
                 }
 
                 newRoundGames.add(GameDTO.create(chessBoardNo, player1, player2));
