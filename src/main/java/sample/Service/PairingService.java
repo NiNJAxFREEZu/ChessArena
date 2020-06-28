@@ -15,7 +15,7 @@ import java.util.stream.Collectors;
 public class PairingService {
     @Autowired
     private PlayerService playerService;
-    private HashMap<String, HashSet<String>> pairingHistory;
+    private HashMap<String, List<String>> pairingHistory;
 
     RoundDTO getPlayerPairings(List<PlayerDTO> players) {
         GameDTO game1 = GameDTO.builder()
@@ -321,11 +321,11 @@ public class PairingService {
 
     //Done!
     private void buildPlayersPairingHistory() {
-        HashMap<String, HashSet<String>> pairingHistory = new HashMap<>();
+        HashMap<String, List<String>> pairingHistory = new HashMap<>();
 
         //Adding players to hashmap
         for (PlayerDTO player : TournamentService.currentTournament.getPlayerList()) {
-            pairingHistory.put(player.getPlayerID(), new HashSet<>());
+            pairingHistory.put(player.getPlayerID(), new ArrayList<>());
         }
 
         //Building hashsets
@@ -352,7 +352,7 @@ public class PairingService {
     //TODO
     private boolean playedTogetherTwice(PlayerDTO player1, PlayerDTO player2) {
         return pairingHistory.get(player1.getPlayerID()).contains(player2.getPlayerID())
-                || pairingHistory.get(player2.getPlayerID()).contains(player1.getPlayerID());
+                && (pairingHistory.get(player1.getPlayerID()).subList(0,pairingHistory.get(player1.getPlayerID()).indexOf(player2.getPlayerID())).contains(player2.getPlayerID())
+                || pairingHistory.get(player1.getPlayerID()).subList(pairingHistory.get(player1.getPlayerID()).indexOf(player2.getPlayerID()), pairingHistory.get(player1.getPlayerID()).size()).contains(player2.getPlayerID()));
     }
-
 }

@@ -186,9 +186,15 @@ public class TournamentCreatorController implements Initializable {
     private void checkIfRoundRobinAndSetAdequateAmountOfRounds() {
         if (selectedTournamentType.equals(TournamentType.RoundRobin)) {
             selectedAmountOfRounds = entrantsTable.getItems().size() - 1;
+
+            if(entrantsTable.getItems().size() % 2 != 0)
+                ++selectedAmountOfRounds;
         }
         if (selectedTournamentType.equals(TournamentType.DoubleRoundRobin)) {
-            selectedAmountOfRounds = (entrantsTable.getItems().size() * 2) - 1;
+            selectedAmountOfRounds = (entrantsTable.getItems().size() * 2) - 2;
+
+            if(entrantsTable.getItems().size() % 2 != 0)
+                selectedAmountOfRounds += 2;
         }
     }
 
