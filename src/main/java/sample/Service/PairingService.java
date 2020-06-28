@@ -43,11 +43,6 @@ public class PairingService {
                 .build();
     }
 
-    /*
-    VERY importanet methoed - for now let's assume that player count is EVEN
-    RULE 0 -> pair players for first round according to their ratings
-    RULE 1 -> pair players according to their tournament round history (two players cannot play together twice)
-    */
     RoundDTO getPlayerPairings() {
         //First round
         if (TournamentService.currentTournament.getRoundNo() == 1)
@@ -287,7 +282,7 @@ public class PairingService {
                 .build();
     }
 
-    //Testing!
+    //Done!
     private RoundDTO getHeadsUpPairing() {
         double scoreLimit = TournamentService.currentTournament.getNumberOfRounds() / 2.0 + 0.5;
 

@@ -1,5 +1,6 @@
 package sample.GUI;
 
+import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
@@ -8,7 +9,6 @@ import javafx.scene.control.ButtonType;
 import javafx.scene.control.ToolBar;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.VBox;
-import javafx.stage.Stage;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import sample.Models.DTOs.PlayerDTO;
@@ -52,8 +52,8 @@ public class SplashScreenController {
     @FXML
     public void exit(ActionEvent actionEvent) {
         if (showAreYouSureToExitDialog()) {
-            Stage stage = (Stage) closeButton.getScene().getWindow();
-            stage.close();
+                Platform.exit();
+                System.exit(0);
         }
     }
 
